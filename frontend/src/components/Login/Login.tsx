@@ -6,7 +6,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
+    // TODO Handle login logic here
     console.log("Logging in with:", { name, password });
   };
 

@@ -12,6 +12,7 @@ import { RecipeProvider } from "./providers/RecipesProvider.tsx";
 import { Navbar } from "./components/Navbar.tsx";
 import { ContactPage } from "./pages/ContactPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
+import { Footer } from "./components/Footer.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +31,7 @@ const App = () => {
   return (
     <RecipeProvider>
       <RouterProvider router={router} />
+      <Footer />
     </RecipeProvider>
   );
 };

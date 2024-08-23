@@ -7,7 +7,7 @@ export const ContactForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle contact form submission logic here
+    // TODO Handle contact form submission logic here
     console.log("Contacting with:", { email, name, message });
   };
 
