@@ -9,7 +9,9 @@ interface RecipeFormProps {
     ingredients: string,
     instructions: string,
     image: string,
-    cuisineType: string
+    cuisineType: string,
+    description: string,
+    funFact: string
   ) => void;
 }
 
@@ -24,13 +26,15 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
   const [instructions, setInstructions] = useState(initialInstructions);
   const [image, setImage] = useState("");
   const [cuisineType, setCuisineType] = useState("");
+  const [funFact, setFunFact] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(title, ingredients, instructions, image, cuisineType);
+    onSubmit(title, ingredients, instructions, image, cuisineType, funFact, description);
   };
 
-  // TODO add some validation and feedback over here and also prettify this mess 
+  // TODO add some validation and feedback over here and also prettify this mess
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -52,6 +56,14 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
       <div>
         <label>Cuisine Type</label>
         <input type="text" value={cuisineType} onChange={(e) => setCuisineType(e.target.value)} />
+      </div>
+      <div>
+        <label>Description</label>
+        <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+      </div>
+      <div>
+        <label>Fun Fact</label>
+        <input type="text" value={funFact} onChange={(e) => setFunFact(e.target.value)} />
       </div>
       <button type="submit">Submit</button>
     </form>

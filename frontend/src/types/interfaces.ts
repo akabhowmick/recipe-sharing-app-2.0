@@ -3,6 +3,8 @@ export interface Recipe {
   title: string;
   ingredients: string;
   instructions: string;
-  image: string; 
+  image: string;
   cuisineType: string;
+  description: string;
+  funFact: string;
 }
