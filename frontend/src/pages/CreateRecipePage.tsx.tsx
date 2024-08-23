@@ -1,52 +1,33 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import RecipeForm from "../components/RecipeForm";
+import { useRecipeContext } from "../providers/RecipesProvider";
 
 export const CreateRecipePage = () => {
-  const [title, setTitle] = useState("");
-  const [ingredients, setIngredients] = useState("");
-  const [instructions, setInstructions] = useState("");
+  const { addNewRecipes } = useRecipeContext();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (
+    title: string,
+    ingredients: string,
+    instructions: string,
+    image: string,
+    cuisineType: string
+  ) => {
+    const newRecipe = { title, ingredients, instructions, image, cuisineType };
 
-    const newRecipe = { title, ingredients, instructions };
-
-    fetch("/api/recipes/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newRecipe),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        navigate(`/recipes/${data.id}`);
-      });
+    const newRecipeId = addNewRecipes(newRecipe);
+    if (newRecipeId) {
+      navigate(`/recipes/${newRecipeId}`);
+    } else {
+      console.error("Failed to create new recipe");
+      // TODO make this a toast 
+    }
   };
 
   return (
     <div>
       <h1>Create a New Recipe</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title</label>
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-        </div>
-        <div>
-          <label>Ingredients</label>
-          <textarea value={ingredients} onChange={(e) => setIngredients(e.target.value)} required />
-        </div>
-        <div>
-          <label>Instructions</label>
-          <textarea
-            value={instructions}
-            onChange={(e) => setInstructions(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Create Recipe</button>
-      </form>
+      <RecipeForm onSubmit={handleSubmit} />
     </div>
   );
 };

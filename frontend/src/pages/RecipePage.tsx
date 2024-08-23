@@ -1,34 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-interface Recipe {
-  id: number;
-  title: string;
-  ingredients: string;
-  instructions: string;
-}
+import RecipeDetail from "../components/RecipeDetail";
+import { Recipe } from "../types/interfaces";
+import { useRecipeContext } from "../providers/RecipesProvider";
 
 export const RecipePage = () => {
   const { id } = useParams<{ id: string }>();
+  const { recipes } = useRecipeContext();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
 
   useEffect(() => {
-    fetch(`/api/recipes/${id}/`)
-      .then((response) => response.json())
-      .then((data) => setRecipe(data));
-  }, [id]);
-
-  if (!recipe) {
-    return <p>Loading...</p>;
-  }
-
-  return (
-    <div>
-      <h1>{recipe.title}</h1>
-      <h3>Ingredients</h3>
-      <p>{recipe.ingredients}</p>
-      <h3>Instructions</h3>
-      <p>{recipe.instructions}</p>
-    </div>
-  );
+    // TODO: fetch the recipe from the API and update the state when available.
+    if (id) {
+      const display = recipes.find((recipe) => recipe.id === parseInt(id));
+      if (display) {
+        setRecipe(display);
+      }
+    }
+  }, [id, recipes]);
+  return recipe ? <RecipeDetail recipe={recipe} /> : <h1>Loading Recipe...</h1>;
 };

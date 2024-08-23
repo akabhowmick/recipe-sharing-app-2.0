@@ -1,9 +1,5 @@
 import { Link } from "react-router-dom";
-
-interface Recipe {
-  id: number;
-  title: string;
-}
+import { Recipe } from "../types/interfaces";
 
 export const RecipeList = ({ recipes }: { recipes: Recipe[] }) => {
   return (
