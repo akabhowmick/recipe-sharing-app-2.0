@@ -5,7 +5,8 @@ import { Outlet } from "react-router-dom";
 const navigation = [
   { name: "Recipe Sharing APP", href: "/", current: true },
   { name: "Add a recipe", href: "/create", current: false },
-  { name: "Contact Us", href: "#", current: false },
+  { name: "Contact Us", href: "/contact", current: false },
+  { name: "Login", href: "/login", current: false },
 ];
 
 function classNames(...classes: string[]) {

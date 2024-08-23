@@ -1,13 +1,15 @@
 import { Recipe } from "../types/interfaces";
+import { generateRandomImage } from "./RandomImage";
 
 export const RecipesData: Recipe[] = [
   {
     id: 1,
     title: "Braised Pork Belly (Hong Shao Rou)",
     ingredients:
-      "Pork belly, soy sauce, sugar, ginger, garlic, star anise, cinnamon, Shaoxing wine",
-    instructions: "Blanch pork belly, then braise with soy sauce, sugar, and spices until tender.",
-    image: "path-to-image/braised-pork-belly.jpg",
+      "500g pork belly, 1/4 cup soy sauce, 2 tbsp sugar, 3 slices ginger, 3 cloves garlic, 2 star anise, 1 cinnamon stick, 1/4 cup Shaoxing wine",
+    instructions:
+      "Blanch the pork belly in boiling water for 5 minutes. Drain and set aside. In a pot, caramelize the sugar until golden brown. Add the ginger, garlic, star anise, and cinnamon stick, and stir for 1 minute. Add the pork belly, soy sauce, and Shaoxing wine. Add water to cover the pork. Bring to a boil, then reduce to a simmer and cook for 1.5 hours until the pork is tender and the sauce has thickened.",
+    image: generateRandomImage(),
     cuisineType: "Chinese",
     description:
       "A classic Chinese dish, Hong Shao Rou is known for its rich, savory flavor and melt-in-your-mouth texture.",
@@ -16,10 +18,11 @@ export const RecipesData: Recipe[] = [
   {
     id: 2,
     title: "Chicken Adobo",
-    ingredients: "Chicken, soy sauce, vinegar, garlic, bay leaves, black peppercorns, onions",
+    ingredients:
+      "1 kg chicken thighs, 1/2 cup soy sauce, 1/4 cup vinegar, 5 cloves garlic, 3 bay leaves, 1 tsp black peppercorns, 1 onion",
     instructions:
-      "Marinate chicken in soy sauce and vinegar, then simmer with garlic and bay leaves.",
-    image: "path-to-image/chicken-adobo.jpg",
+      "Marinate the chicken in soy sauce and vinegar for at least 30 minutes. In a pot, sauté the garlic and onion until fragrant. Add the chicken along with the marinade, bay leaves, and black peppercorns. Bring to a boil, then reduce the heat and simmer for 30-40 minutes until the chicken is cooked through and the sauce has reduced.",
+    image: generateRandomImage(),
     cuisineType: "Filipino",
     description:
       "Adobo is considered the unofficial national dish of the Philippines, known for its tangy, savory flavor.",
@@ -29,9 +32,10 @@ export const RecipesData: Recipe[] = [
     id: 3,
     title: "Beef Rendang",
     ingredients:
-      "Beef, coconut milk, lemongrass, garlic, ginger, turmeric, chili, kaffir lime leaves",
-    instructions: "Slow cook beef with spices and coconut milk until dry and tender.",
-    image: "path-to-image/beef-rendang.jpg",
+      "1 kg beef, 400 ml coconut milk, 2 stalks lemongrass, 5 cloves garlic, 1 thumb ginger, 1 thumb turmeric, 3 red chilies, 3 kaffir lime leaves",
+    instructions:
+      "Cut the beef into cubes and set aside. Blend the garlic, ginger, turmeric, and chilies into a paste. In a pot, fry the paste until fragrant. Add the lemongrass and kaffir lime leaves, then the beef. Pour in the coconut milk and bring to a boil. Reduce the heat and simmer for 2-3 hours, stirring occasionally, until the beef is tender and the sauce has thickened.",
+    image: generateRandomImage(),
     cuisineType: "Indonesian",
     description:
       "A traditional Indonesian dish, Rendang is a dry curry with complex flavors from slow-cooking spices and coconut milk.",
@@ -40,10 +44,11 @@ export const RecipesData: Recipe[] = [
   {
     id: 4,
     title: "Sushi Rolls (Maki)",
-    ingredients: "Sushi rice, nori, raw fish (tuna, salmon), cucumber, avocado, soy sauce, wasabi",
+    ingredients:
+      "2 cups sushi rice, 4 sheets nori, 200g raw fish (tuna or salmon), 1 cucumber, 1 avocado, soy sauce, wasabi",
     instructions:
-      "Roll sushi rice and ingredients in nori, slice, and serve with soy sauce and wasabi.",
-    image: "path-to-image/sushi-rolls.jpg",
+      "Cook the sushi rice according to package instructions and let it cool. Slice the fish, cucumber, and avocado into thin strips. Place a sheet of nori on a bamboo mat, spread a layer of rice over it, and add the fish, cucumber, and avocado in the center. Roll the sushi tightly and slice into pieces. Serve with soy sauce and wasabi.",
+    image: generateRandomImage(),
     cuisineType: "Japanese",
     description:
       "Maki sushi are rolled sushi pieces, made by wrapping rice and fillings in nori seaweed.",
@@ -52,9 +57,11 @@ export const RecipesData: Recipe[] = [
   {
     id: 5,
     title: "Bibimbap",
-    ingredients: "Rice, mixed vegetables, gochujang, beef, egg, sesame oil, soy sauce, garlic",
-    instructions: "Arrange vegetables, beef, and egg over rice, serve with gochujang sauce.",
-    image: "path-to-image/bibimbap.jpg",
+    ingredients:
+      "2 cups cooked rice, 1 cup mixed vegetables (carrot, spinach, bean sprouts), 100g beef, 1 egg, 2 tbsp gochujang, 1 tbsp sesame oil, 1 tbsp soy sauce, 2 cloves garlic",
+    instructions:
+      "Cook the beef in a pan with soy sauce and garlic until browned. Sauté the vegetables separately. In a bowl, arrange the rice, vegetables, beef, and fried egg on top. Serve with a dollop of gochujang and a drizzle of sesame oil.",
+    image: generateRandomImage(),
     cuisineType: "Korean",
     description: "Bibimbap is a popular Korean mixed rice dish, often served in a hot stone bowl.",
     funFact: "The word 'bibimbap' means 'mixed rice' in Korean.",
@@ -62,9 +69,11 @@ export const RecipesData: Recipe[] = [
   {
     id: 6,
     title: "Tom Yum Soup",
-    ingredients: "Shrimp, lemongrass, kaffir lime leaves, galangal, chili, fish sauce, lime juice",
-    instructions: "Boil broth with spices, add shrimp and cook until done, garnish with herbs.",
-    image: "path-to-image/tom-yum-soup.jpg",
+    ingredients:
+      "200g shrimp, 2 stalks lemongrass, 3 kaffir lime leaves, 1 thumb galangal, 2 red chilies, 2 tbsp fish sauce, 1 lime",
+    instructions:
+      "In a pot, bring water to a boil with lemongrass, kaffir lime leaves, galangal, and chilies. Add the shrimp and cook until done. Season with fish sauce and lime juice. Garnish with fresh herbs and serve hot.",
+    image: generateRandomImage(),
     cuisineType: "Thai",
     description:
       "Tom Yum is a hot and sour Thai soup known for its fragrant spices and fresh herbs.",
@@ -75,9 +84,10 @@ export const RecipesData: Recipe[] = [
     id: 7,
     title: "Pad Thai",
     ingredients:
-      "Rice noodles, shrimp or chicken, tofu, peanuts, bean sprouts, egg, tamarind paste, fish sauce",
-    instructions: "Stir-fry noodles with protein, tofu, and sauce, garnish with peanuts and lime.",
-    image: "path-to-image/pad-thai.jpg",
+      "200g rice noodles, 150g shrimp or chicken, 100g tofu, 1/4 cup peanuts, 1 cup bean sprouts, 1 egg, 3 tbsp tamarind paste, 2 tbsp fish sauce",
+    instructions:
+      "Soak the rice noodles in hot water until soft. In a pan, stir-fry the protein, tofu, and egg. Add the noodles, tamarind paste, fish sauce, and a little water. Stir until well combined. Garnish with peanuts and lime wedges.",
+    image: generateRandomImage(),
     cuisineType: "Thai",
     description:
       "Pad Thai is a stir-fried noodle dish that is one of Thailand's most famous exports.",
@@ -88,9 +98,10 @@ export const RecipesData: Recipe[] = [
     id: 8,
     title: "Pho",
     ingredients:
-      "Beef broth, rice noodles, beef slices, star anise, cinnamon, onion, ginger, basil, lime",
-    instructions: "Simmer broth with spices, cook noodles, assemble with beef and herbs.",
-    image: "path-to-image/pho.jpg",
+      "1.5 liters beef broth, 200g rice noodles, 100g beef slices, 2 star anise, 1 cinnamon stick, 1 onion, 1 thumb ginger, fresh basil, 1 lime",
+    instructions:
+      "Simmer the broth with star anise, cinnamon, onion, and ginger for 1 hour. Cook the rice noodles according to package instructions. Assemble the soup by placing noodles in a bowl, adding beef slices, and pouring hot broth over them. Garnish with fresh herbs and lime wedges.",
+    image: generateRandomImage(),
     cuisineType: "Vietnamese",
     description: "Pho is a Vietnamese noodle soup, typically made with beef broth and herbs.",
     funFact:
@@ -99,9 +110,11 @@ export const RecipesData: Recipe[] = [
   {
     id: 9,
     title: "Satay Chicken",
-    ingredients: "Chicken, peanuts, coconut milk, curry powder, soy sauce, garlic, turmeric",
-    instructions: "Marinate chicken, skewer, grill, and serve with peanut sauce.",
-    image: "path-to-image/satay-chicken.jpg",
+    ingredients:
+      "500g chicken, 1/4 cup peanuts, 200ml coconut milk, 1 tbsp curry powder, 2 tbsp soy sauce, 3 cloves garlic, 1 tsp turmeric",
+    instructions:
+      "Marinate the chicken in coconut milk, curry powder, soy sauce, garlic, and turmeric for at least 1 hour. Skewer the chicken and grill until cooked through. Serve with peanut sauce made by blending peanuts with coconut milk and spices.",
+    image: generateRandomImage(),
     cuisineType: "Malaysian",
     description:
       "Satay is a dish of seasoned, skewered, and grilled meat, served with a peanut sauce.",
@@ -111,9 +124,11 @@ export const RecipesData: Recipe[] = [
   {
     id: 10,
     title: "Dumplings (Jiaozi)",
-    ingredients: "Ground pork, cabbage, ginger, garlic, soy sauce, dumpling wrappers",
-    instructions: "Fill wrappers with pork mixture, seal, and steam or pan-fry.",
-    image: "path-to-image/dumplings.jpg",
+    ingredients:
+      "200g ground pork, 100g cabbage, 1 thumb ginger, 2 cloves garlic, 2 tbsp soy sauce, dumpling wrappers",
+    instructions:
+      "Mix the ground pork with finely chopped cabbage, ginger, garlic, and soy sauce. Place a small amount of filling in the center of each wrapper, fold and seal the edges. Steam or pan-fry the dumplings until cooked through.",
+    image: generateRandomImage(),
     cuisineType: "Chinese",
     description:
       "Jiaozi are traditional Chinese dumplings, often enjoyed during the Lunar New Year.",

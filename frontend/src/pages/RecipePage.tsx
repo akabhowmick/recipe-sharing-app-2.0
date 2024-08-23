@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import RecipeDetail from "../components/RecipeDetail";
+import RecipeDetail from "../components/Recipe/RecipeDetail";
 import { Recipe } from "../types/interfaces";
 import { useRecipeContext } from "../providers/RecipesProvider";
 
