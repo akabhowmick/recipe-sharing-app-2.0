@@ -9,9 +9,9 @@ interface RecipeFormProps {
     ingredients: string,
     instructions: string,
     image: string,
-    cuisineType: string,
+    cuisine_type: string,
     description: string,
-    funFact: string
+    fun_fact: string
   ) => void;
 }
 
@@ -25,13 +25,13 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
   const [ingredients, setIngredients] = useState(initialIngredients);
   const [instructions, setInstructions] = useState(initialInstructions);
   const [image, setImage] = useState("");
-  const [cuisineType, setCuisineType] = useState("");
-  const [funFact, setFunFact] = useState("");
+  const [cuisine_type, setcuisine_type] = useState("");
+  const [fun_fact, setfun_fact] = useState("");
   const [description, setDescription] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(title, ingredients, instructions, image, cuisineType, funFact, description);
+    onSubmit(title, ingredients, instructions, image, cuisine_type, fun_fact, description);
   };
 
   return (
@@ -83,8 +83,8 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2">Cuisine Type</label>
         <select
-          value={cuisineType}
-          onChange={(e) => setCuisineType(e.target.value)}
+          value={cuisine_type}
+          onChange={(e) => setcuisine_type(e.target.value)}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           <option value="" disabled>
@@ -113,8 +113,8 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
         <label className="block text-gray-700 font-bold mb-2">Fun Fact</label>
         <input
           type="text"
-          value={funFact}
-          onChange={(e) => setFunFact(e.target.value)}
+          value={fun_fact}
+          onChange={(e) => setfun_fact(e.target.value)}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       </div>

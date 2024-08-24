@@ -10,10 +10,10 @@ export const RecipesData: Recipe[] = [
     instructions:
       "Blanch the pork belly in boiling water for 5 minutes. Drain and set aside. In a pot, caramelize the sugar until golden brown. Add the ginger, garlic, star anise, and cinnamon stick, and stir for 1 minute. Add the pork belly, soy sauce, and Shaoxing wine. Add water to cover the pork. Bring to a boil, then reduce to a simmer and cook for 1.5 hours until the pork is tender and the sauce has thickened.",
     image: generateRandomImage(),
-    cuisineType: "Chinese",
+    cuisine_type: "Chinese",
     description:
       "A classic Chinese dish, Hong Shao Rou is known for its rich, savory flavor and melt-in-your-mouth texture.",
-    funFact: "This dish was a favorite of Chairman Mao, who hailed from Hunan province.",
+    fun_fact: "This dish was a favorite of Chairman Mao, who hailed from Hunan province.",
   },
   {
     id: 2,
@@ -23,10 +23,10 @@ export const RecipesData: Recipe[] = [
     instructions:
       "Marinate the chicken in soy sauce and vinegar for at least 30 minutes. In a pot, sauté the garlic and onion until fragrant. Add the chicken along with the marinade, bay leaves, and black peppercorns. Bring to a boil, then reduce the heat and simmer for 30-40 minutes until the chicken is cooked through and the sauce has reduced.",
     image: generateRandomImage(),
-    cuisineType: "Filipino",
+    cuisine_type: "Filipino",
     description:
       "Adobo is considered the unofficial national dish of the Philippines, known for its tangy, savory flavor.",
-    funFact: "The name 'adobo' comes from the Spanish word 'adobar,' which means 'to marinate.'",
+    fun_fact: "The name 'adobo' comes from the Spanish word 'adobar,' which means 'to marinate.'",
   },
   {
     id: 3,
@@ -36,10 +36,10 @@ export const RecipesData: Recipe[] = [
     instructions:
       "Cut the beef into cubes and set aside. Blend the garlic, ginger, turmeric, and chilies into a paste. In a pot, fry the paste until fragrant. Add the lemongrass and kaffir lime leaves, then the beef. Pour in the coconut milk and bring to a boil. Reduce the heat and simmer for 2-3 hours, stirring occasionally, until the beef is tender and the sauce has thickened.",
     image: generateRandomImage(),
-    cuisineType: "Indonesian",
+    cuisine_type: "Indonesian",
     description:
       "A traditional Indonesian dish, Rendang is a dry curry with complex flavors from slow-cooking spices and coconut milk.",
-    funFact: "Rendang was named the 'World's Most Delicious Food' by CNN in 2011.",
+    fun_fact: "Rendang was named the 'World's Most Delicious Food' by CNN in 2011.",
   },
   {
     id: 4,
@@ -49,10 +49,10 @@ export const RecipesData: Recipe[] = [
     instructions:
       "Cook the sushi rice according to package instructions and let it cool. Slice the fish, cucumber, and avocado into thin strips. Place a sheet of nori on a bamboo mat, spread a layer of rice over it, and add the fish, cucumber, and avocado in the center. Roll the sushi tightly and slice into pieces. Serve with soy sauce and wasabi.",
     image: generateRandomImage(),
-    cuisineType: "Japanese",
+    cuisine_type: "Japanese",
     description:
       "Maki sushi are rolled sushi pieces, made by wrapping rice and fillings in nori seaweed.",
-    funFact: "The word 'sushi' actually refers to the vinegared rice, not the fish!",
+    fun_fact: "The word 'sushi' actually refers to the vinegared rice, not the fish!",
   },
   {
     id: 5,
@@ -62,9 +62,9 @@ export const RecipesData: Recipe[] = [
     instructions:
       "Cook the beef in a pan with soy sauce and garlic until browned. Sauté the vegetables separately. In a bowl, arrange the rice, vegetables, beef, and fried egg on top. Serve with a dollop of gochujang and a drizzle of sesame oil.",
     image: generateRandomImage(),
-    cuisineType: "Korean",
+    cuisine_type: "Korean",
     description: "Bibimbap is a popular Korean mixed rice dish, often served in a hot stone bowl.",
-    funFact: "The word 'bibimbap' means 'mixed rice' in Korean.",
+    fun_fact: "The word 'bibimbap' means 'mixed rice' in Korean.",
   },
   {
     id: 6,
@@ -74,10 +74,10 @@ export const RecipesData: Recipe[] = [
     instructions:
       "In a pot, bring water to a boil with lemongrass, kaffir lime leaves, galangal, and chilies. Add the shrimp and cook until done. Season with fish sauce and lime juice. Garnish with fresh herbs and serve hot.",
     image: generateRandomImage(),
-    cuisineType: "Thai",
+    cuisine_type: "Thai",
     description:
       "Tom Yum is a hot and sour Thai soup known for its fragrant spices and fresh herbs.",
-    funFact:
+    fun_fact:
       "Tom Yum soup is often considered a natural remedy for colds due to its spicy, warming ingredients.",
   },
   {
@@ -88,10 +88,10 @@ export const RecipesData: Recipe[] = [
     instructions:
       "Soak the rice noodles in hot water until soft. In a pan, stir-fry the protein, tofu, and egg. Add the noodles, tamarind paste, fish sauce, and a little water. Stir until well combined. Garnish with peanuts and lime wedges.",
     image: generateRandomImage(),
-    cuisineType: "Thai",
+    cuisine_type: "Thai",
     description:
       "Pad Thai is a stir-fried noodle dish that is one of Thailand's most famous exports.",
-    funFact:
+    fun_fact:
       "Pad Thai was promoted in the 1930s as part of a campaign to reduce rice consumption in Thailand.",
   },
   {
@@ -102,9 +102,9 @@ export const RecipesData: Recipe[] = [
     instructions:
       "Simmer the broth with star anise, cinnamon, onion, and ginger for 1 hour. Cook the rice noodles according to package instructions. Assemble the soup by placing noodles in a bowl, adding beef slices, and pouring hot broth over them. Garnish with fresh herbs and lime wedges.",
     image: generateRandomImage(),
-    cuisineType: "Vietnamese",
+    cuisine_type: "Vietnamese",
     description: "Pho is a Vietnamese noodle soup, typically made with beef broth and herbs.",
-    funFact:
+    fun_fact:
       "Pho is often eaten for breakfast in Vietnam, where it is considered a hearty start to the day.",
   },
   {
@@ -115,10 +115,10 @@ export const RecipesData: Recipe[] = [
     instructions:
       "Marinate the chicken in coconut milk, curry powder, soy sauce, garlic, and turmeric for at least 1 hour. Skewer the chicken and grill until cooked through. Serve with peanut sauce made by blending peanuts with coconut milk and spices.",
     image: generateRandomImage(),
-    cuisineType: "Malaysian",
+    cuisine_type: "Malaysian",
     description:
       "Satay is a dish of seasoned, skewered, and grilled meat, served with a peanut sauce.",
-    funFact:
+    fun_fact:
       "Satay is believed to have been inspired by Indian kebabs, brought to Southeast Asia by Muslim traders.",
   },
   {
@@ -129,10 +129,10 @@ export const RecipesData: Recipe[] = [
     instructions:
       "Mix the ground pork with finely chopped cabbage, ginger, garlic, and soy sauce. Place a small amount of filling in the center of each wrapper, fold and seal the edges. Steam or pan-fry the dumplings until cooked through.",
     image: generateRandomImage(),
-    cuisineType: "Chinese",
+    cuisine_type: "Chinese",
     description:
       "Jiaozi are traditional Chinese dumplings, often enjoyed during the Lunar New Year.",
-    funFact:
+    fun_fact:
       "Dumplings symbolize wealth in Chinese culture because they resemble ancient Chinese money.",
   },
 ];

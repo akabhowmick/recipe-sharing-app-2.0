@@ -11,18 +11,18 @@ export const CreateRecipePage = () => {
     ingredients: string,
     instructions: string,
     image: string,
-    cuisineType: string,
+    cuisine_type: string,
     description: string,
-    funFact: string
+    fun_fact: string
   ) => {
     const newRecipe = {
       title,
       ingredients,
       instructions,
       image,
-      cuisineType,
+      cuisine_type,
       description,
-      funFact,
+      fun_fact,
     };
 
     const newRecipeId = addNewRecipes(newRecipe);

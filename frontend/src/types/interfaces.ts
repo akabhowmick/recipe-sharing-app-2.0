@@ -4,7 +4,7 @@ export interface Recipe {
   ingredients: string;
   instructions: string;
   image: string;
-  cuisineType: string;
+  cuisine_type: string;
   description: string;
-  funFact: string;
+  fun_fact: string;
 }
