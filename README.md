@@ -1,53 +1,113 @@
-## Backend cd
+# Welcome to the Recipe Sharing App
 
-# 1. Create a virtual environment
+## Table of Contents
 
+1. [Inspiration](#inspiration)
+2. [Project Breakdown](#project-breakdown)
+3. [Backend Setup](#backend-setup)
+4. [Frontend Setup](#frontend-setup)
+5. [Future Features](#future-features)
+
+## Inspiration
+
+As an Indian-American married to a Korean-American, my wife and I often find ourselves calling our mothers for tips on how to prepare traditional dishes correctly. It would be great to have a platform where it is possible and easy to share information regarding our cultural dishes!
+
+## Project Breakdown
+
+- **Frontend:** React JS, Tailwind CSS, TypeScript
+- **Backend:** Django
+
+## Backend Setup
+
+1. Navigate to the Backend Directory:
+
+```bash
+cd backend/
+```
+
+2. Create a virtual environment by running the command:
+
+```bash
 python3 -m venv env
+```
 
-# 2. Activate the virtual environment
+3. Activate the Virtual Environment:
 
-# On Windows:
+   On Windows:
 
-.\env\Scripts\activate
+   ```bash
+   .\env\Scripts\activate
+   ```
 
-# On macOS/Linux:
+   On macOs/Linux:
 
-source env/bin/activate
+   ```bash
+   source env/bin/activate
+   ```
 
-# 3. Install Django
+4. Install Django:
 
-pip install django
+```bash
+   pip install django
+```
 
-# 4. Start a new Django project
+5. Navigate to the Project Directory:
 
-django-admin startproject myproject
+```bash
+cd recipes/
+```
 
-# 5. Navigate to project directory
+6. Run Initial Migrations:
 
-cd myproject
-
-# 6. Run initial migrations
+```bash
 python3 manage.py makemigrations
 python3 manage.py migrate
 
-# 7. Start the development server
+```
 
+6. Start the Development Server:
+
+```bash
 python manage.py runserver
+```
 
-# 8. (Optional) Create a new app within the project
+## Frontend Setup
 
-python manage.py startapp 
-<!-- Update this file -->
-# 9. (Optional) Install additional dependencies from requirements.txt
+The frontend of the Recipe Sharing App is built with React JS, providing a dynamic and interactive user interface. Tailwind CSS is used for utility-first styling, ensuring a consistent and responsive design across all devices. TypeScript adds type safety, making the codebase more reliable and easier to maintain.
 
-pip install -r requirements.txt
+1. Navigate to the Frontend Directory (in a separate terminal):
 
-# 10. Deactivate the virtual environment when done
+```bash
+cd frontend/
+```
 
-deactivate
+2. Install Dependencies:
 
-## Requirements:
+```bash
+npm install
+```
 
-1. Need Python
-   python --version
-   python3 --version
+3. Run the Development Server:
+
+```bash
+npm run dev
+```
+
+## Future Features
+
+1. Recipe Management:
+
+   Allow users to update or delete their recipes, ensuring they have full control over their content.
+
+2. Profile Management:
+
+   Enable users to update or delete their profiles, giving them the ability to manage their presence on the platform.
+   I
+
+3. Image Uploads:
+
+   Introduce a feature for users to upload images for their recipes, adding a visual element to the culinary creations.
+
+4. Social Interactions:
+
+   Expand the app's social features, allowing users to share recipes on other platforms, like, favorite, bookmark, and comment on recipes. This will foster a community of food enthusiasts and encourage engagement.
