@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import { SignUp } from "../components/Login/Signup";
 import Login from "../components/Login/Login";
+import { useAuthContext } from "../providers/AuthProvider";
+import Logout from "../components/Logout";
 
 const LoginPage: React.FC = () => {
   const [isRegistering, setIsRegistering] = useState(false);
+  const { user } = useAuthContext();
+
+  if (user) {
+    return <Logout />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">

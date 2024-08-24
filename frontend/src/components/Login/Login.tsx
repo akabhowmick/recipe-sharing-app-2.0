@@ -1,23 +1,38 @@
 import React, { useState } from "react";
+import { useAuthContext } from "../../providers/AuthProvider";
+import { errorMessage, successMessage } from "../UserAlert";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useAuthContext();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO Handle login logic here
-    console.log("Logging in with:", { name, password });
+    try {
+      const success = await login(email, password);
+      if (success) {
+        successMessage("Login successful", "You can now share your recipes!");
+        navigate(`/`);
+      } else {
+        errorMessage();
+      }
+    } catch (error) {
+      console.error("Login failed", error);
+      errorMessage();
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
       <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">Name</label>
+        <label className="block text-gray-700 font-bold mb-2">Email</label>
         <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />

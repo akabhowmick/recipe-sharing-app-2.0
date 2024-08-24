@@ -1,14 +1,25 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../providers/AuthProvider";
+import { successMessage, errorMessage } from "../UserAlert";
 
 export const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const { register } = useAuthContext();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO handle with the backend
-    console.log("Signing up with:", { email, name, password });
+    try {
+      await register(name, email, password);
+      successMessage("Registration successful", "You can now share your recipes!");
+      navigate(`/`);
+    } catch (error) {
+      console.error("Registration failed", error);
+      errorMessage();
+    }
   };
 
   return (

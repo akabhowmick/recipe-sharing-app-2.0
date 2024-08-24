@@ -1,19 +1,22 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Outlet } from "react-router-dom";
-
-const navigation = [
-  { name: "Recipe Sharing APP", href: "/", current: true },
-  { name: "Add a recipe", href: "/create", current: false },
-  { name: "Contact Us", href: "/contact", current: false },
-  { name: "Login", href: "/login", current: false },
-];
+import { useAuthContext } from "../providers/AuthProvider";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export const Navbar = () => {
+  const { user } = useAuthContext();
+
+  const navigation = [
+    { name: "Recipe Sharing APP", href: "/", current: true },
+    { name: "Add a recipe", href: "/create", current: false },
+    { name: "Contact Us", href: "/contact", current: false },
+    { name: user ? "Logout" : "Login", href: "/login", current: false },
+  ];
+
   return (
     <>
       <header>

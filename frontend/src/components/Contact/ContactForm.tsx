@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { contactMessage } from "../UserAlert";
 
 export const ContactForm = () => {
   const [email, setEmail] = useState("");
@@ -7,7 +8,7 @@ export const ContactForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO Handle contact form submission logic here
+    contactMessage();
     console.log("Contacting with:", { email, name, message });
   };
 

@@ -2,8 +2,12 @@ import { useNavigate } from "react-router-dom";
 import RecipeForm from "../components/Recipe/RecipeForm";
 import { useRecipeContext } from "../providers/RecipesProvider";
 import Swal from "sweetalert2";
+import { errorMessage } from "../components/UserAlert";
+// import { useAuthContext } from "../providers/AuthProvider";
+// import { useEffect } from "react";
 
 export const CreateRecipePage = () => {
+  // const { user } = useAuthContext();
   const { addNewRecipe } = useRecipeContext();
   const navigate = useNavigate();
 
@@ -31,11 +35,7 @@ export const CreateRecipePage = () => {
       if (newRecipeId) {
         navigate(`/recipes/${newRecipeId}`);
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-        });
+        errorMessage();
       }
     } catch (error) {
       console.error("Error creating recipe:", error);
@@ -46,6 +46,12 @@ export const CreateRecipePage = () => {
       });
     }
   };
+
+  // useEffect(() => {
+  //   if (!user) {
+  //     navigate("/login");
+  //   }
+  // }, [navigate, user]);
 
   return (
     <div>
