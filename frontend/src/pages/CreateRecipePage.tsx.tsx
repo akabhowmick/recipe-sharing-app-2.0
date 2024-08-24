@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import RecipeForm from "../components/Recipe/RecipeForm";
 import { useRecipeContext } from "../providers/RecipesProvider";
+import Swal from "sweetalert2";
 
 export const CreateRecipePage = () => {
   const { addNewRecipe } = useRecipeContext();
@@ -30,10 +31,19 @@ export const CreateRecipePage = () => {
       if (newRecipeId) {
         navigate(`/recipes/${newRecipeId}`);
       } else {
-        console.error("Failed to create new recipe");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
       }
     } catch (error) {
-      console.error("Error creating new recipe:", error);
+      console.error("Error creating recipe:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `Something went wrong!`,
+      });
     }
   };
 

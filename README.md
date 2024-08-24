@@ -4,6 +4,7 @@
 
 1. [Inspiration](#inspiration)
 2. [Project Breakdown](#project-breakdown)
+3. [Current Features](#current-features)
 3. [Backend Setup](#backend-setup)
 4. [Frontend Setup](#frontend-setup)
 5. [Future Features](#future-features)
@@ -16,6 +17,12 @@ As an Indian-American married to a Korean-American, my wife and I often find our
 
 - **Frontend:** React JS, Tailwind CSS, TypeScript
 - **Backend:** Django
+
+## Current Features
+1. Login/Register to your account
+2. Logout from your account
+3. Post new recipes when logged in 
+4. View all recipes
 
 ## Backend Setup
 
