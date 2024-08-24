@@ -3,10 +3,10 @@ import RecipeForm from "../components/Recipe/RecipeForm";
 import { useRecipeContext } from "../providers/RecipesProvider";
 
 export const CreateRecipePage = () => {
-  const { addNewRecipes } = useRecipeContext();
+  const { addNewRecipe } = useRecipeContext();
   const navigate = useNavigate();
 
-  const handleSubmit = (
+  const handleSubmit = async (
     title: string,
     ingredients: string,
     instructions: string,
@@ -25,12 +25,15 @@ export const CreateRecipePage = () => {
       fun_fact,
     };
 
-    const newRecipeId = addNewRecipes(newRecipe);
-    if (newRecipeId) {
-      navigate(`/recipes/${newRecipeId}`);
-    } else {
-      console.error("Failed to create new recipe");
-      // TODO make this a toast
+    try {
+      const newRecipeId = await addNewRecipe(newRecipe);
+      if (newRecipeId) {
+        navigate(`/recipes/${newRecipeId}`);
+      } else {
+        console.error("Failed to create new recipe");
+      }
+    } catch (error) {
+      console.error("Error creating new recipe:", error);
     }
   };
 

@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { Recipe } from "../../types/interfaces";
+import { generateRandomImage } from "../../MockData/RandomImage";
 
 export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   return (
     <div className="flex flex-col recipe-card max-w-sm rounded overflow-hidden shadow-lg bg-white pt-4 pb-2 px-3">
-      <img className="w-full" src={recipe.image} alt={`Recipe: ${recipe.title} image`} />
+      <img className="w-full" src={generateRandomImage()} alt={`Recipe: ${recipe.title} image`} />
       <div className="card-content px-6 py-4">
         <div className="font-bold text-xl mb-2">{recipe.title}</div>
         <p className="text-gray-700 mb-1 text-base">Description: {recipe.description}</p>

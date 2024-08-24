@@ -1,3 +1,4 @@
+import { generateRandomImage } from "../../MockData/RandomImage";
 import { useAuthContext } from "../../providers/AuthProvider";
 import { Recipe } from "../../types/interfaces";
 
@@ -8,7 +9,7 @@ const RecipeDetail = ({ recipe }: { recipe: Recipe }) => {
     <div className="m-10 min-h-screen">
       <div className="w-full lg:max-w-full lg:flex justify-center">
         <div className="recipe-banner h-48 lg:h-auto flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
-          <img src={recipe.image} alt="recipe image" />
+          <img src={generateRandomImage()} alt="recipe image" />
         </div>
         <div className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
           {/* Title */}
