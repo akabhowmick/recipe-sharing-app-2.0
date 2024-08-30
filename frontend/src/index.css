@@ -4,7 +4,11 @@
 
 body {
   font-family: Manrope, sans-serif;
-  background: linear-gradient(to bottom, #ffd580, #ff8c00);
+  background: linear-gradient(to bottom,#ff8c00, #512889);
+}
+
+h1{
+  color: white;
 }
 
 .recipe-list-view {

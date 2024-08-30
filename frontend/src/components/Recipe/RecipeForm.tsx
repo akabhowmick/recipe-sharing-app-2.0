@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { ImageUploader } from "./FormUtils/ImageUploader";
+import { v4 } from "uuid";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../../utils/firebaseConfig";
 
 interface RecipeFormProps {
   initialTitle?: string;
@@ -8,7 +12,7 @@ interface RecipeFormProps {
     title: string,
     ingredients: string,
     instructions: string,
-    image: string,
+    imageUrl: string,
     cuisine_type: string,
     description: string,
     fun_fact: string
@@ -24,14 +28,50 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
   const [title, setTitle] = useState(initialTitle);
   const [ingredients, setIngredients] = useState(initialIngredients);
   const [instructions, setInstructions] = useState(initialInstructions);
-  const [image, setImage] = useState("");
-  const [cuisine_type, setcuisine_type] = useState("");
-  const [fun_fact, setfun_fact] = useState("");
+  const [image, setImage] = useState<File | null>(null); // Store image here
+  const [imageURL, setImageURL] = useState("");
+  const [cuisine_type, setCuisine_type] = useState("");
+  const [fun_fact, setFun_fact] = useState("");
   const [description, setDescription] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(title, ingredients, instructions, image, cuisine_type, fun_fact, description);
+
+    if (image) {
+      // Upload image to Firebase when the form is submitted
+      const storageRef = ref(storage, `images/${image.name + v4()}`);
+      const uploadTask = uploadBytesResumable(storageRef, image);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Optional: Track upload progress
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+        (error) => {
+          console.error("Upload failed", error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setImageURL(downloadURL);
+            // Call onSubmit after the image is uploaded
+            onSubmit(
+              title,
+              ingredients,
+              instructions,
+              downloadURL,
+              cuisine_type,
+              fun_fact,
+              description
+            );
+          });
+        }
+      );
+    } else {
+      // Call onSubmit without imageURL if no image is selected
+      onSubmit(title, ingredients, instructions, imageURL, cuisine_type, fun_fact, description);
+    }
   };
 
   return (
@@ -71,20 +111,18 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">Image URL (optional)</label>
-        <input
-          type="text"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-      </div>
+      <ImageUploader setImage={setImage} />
+      {imageURL && (
+        <div>
+          <p>Uploaded Image:</p>
+          <img src={imageURL} alt="Uploaded file" className="uploaded-img" />
+        </div>
+      )}
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2">Cuisine Type</label>
         <select
           value={cuisine_type}
-          onChange={(e) => setcuisine_type(e.target.value)}
+          onChange={(e) => setCuisine_type(e.target.value)}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           <option value="" disabled>
@@ -114,7 +152,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
         <input
           type="text"
           value={fun_fact}
-          onChange={(e) => setfun_fact(e.target.value)}
+          onChange={(e) => setFun_fact(e.target.value)}
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       </div>
