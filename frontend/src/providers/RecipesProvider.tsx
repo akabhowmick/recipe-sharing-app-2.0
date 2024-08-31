@@ -8,7 +8,7 @@ interface RecipeContextType {
   recipes: Recipe[];
   setRecipes: React.Dispatch<React.SetStateAction<Recipe[]>>;
   addNewRecipe: (newRecipe: Recipe) => Promise<number>;
-  updateRecipe: (id: number, updatedRecipe: Recipe) => Promise<void>;
+  updateRecipe: (id: number, updatedRecipe: Recipe) => Promise<number>;
   deleteRecipe: (id: number) => Promise<void>;
 }
 
@@ -35,16 +35,18 @@ export const RecipeProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // PUT request to update an existing recipe
-  const updateRecipe = async (id: number, updatedRecipe: Recipe): Promise<void> => {
+  const updateRecipe = async (id: number, updatedRecipe: Recipe): Promise<number> => {
     try {
-      await axios.put(`${url}${id}/`, updatedRecipe, {
+      const response = await axios.put(`${url}${id}/`, updatedRecipe, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+      const updatedRecipeData = response.data;
       setRecipes((prevRecipes) =>
         prevRecipes.map((recipe) => (recipe.id === id ? updatedRecipe : recipe))
       );
+      return updatedRecipeData.id;
     } catch (error) {
       console.error("Error updating recipe:", error);
       throw error;

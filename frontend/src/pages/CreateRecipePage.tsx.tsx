@@ -6,6 +6,8 @@ import { errorMessage } from "../components/UserAlert";
 // import { useAuthContext } from "../providers/AuthProvider";
 // import { useEffect } from "react";
 
+
+// TODO import the user so only registered users can edit their own recipes
 export const CreateRecipePage = () => {
   // const { user } = useAuthContext();
   const { addNewRecipe } = useRecipeContext();

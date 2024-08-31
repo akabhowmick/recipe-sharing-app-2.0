@@ -13,12 +13,14 @@ import { Navbar } from "./components/Navbar.tsx";
 import { ContactPage } from "./pages/ContactPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import { Footer } from "./components/Footer.tsx";
+import { EditRecipePage } from "./pages/EditRecipePage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Navbar />}>
       <Route path="/" element={<HomePage />} />
       <Route path="/recipes/:id" element={<RecipePage />} />
+      <Route path="/recipes/:id/edit" element={<EditRecipePage />} />
       <Route path="/create" element={<CreateRecipePage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/login" element={<LoginPage />} />
