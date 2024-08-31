@@ -5,8 +5,10 @@ import { useState } from "react";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Swal from "sweetalert2";
+import { useRecipeContext } from "../../providers/RecipesProvider";
 
 export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
+  const { deleteRecipe } = useRecipeContext();
   const navigate = useNavigate();
   const [isFavorited, setIsFavorited] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -21,7 +23,8 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   };
 
   const handleDeleteClick = () => {
-    // Handle delete logic here
+    // TODO: Check authorization first then navigate
+    deleteRecipe(recipe.id!);
   };
 
   const handleEditClick = () => {
