@@ -30,6 +30,7 @@ class Like(models.Model):
 
 
 class Comment(models.Model):
+    id = models.AutoField(primary_key=True)  # Auto-generated unique ID
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, related_name="comments"

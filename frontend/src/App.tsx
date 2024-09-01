@@ -14,6 +14,8 @@ import { ContactPage } from "./pages/ContactPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import { Footer } from "./components/Footer.tsx";
 import { EditRecipePage } from "./pages/EditRecipePage.tsx";
+import { LikeProvider } from "./providers/LikesProvider.tsx";
+import { CommentsProvider } from "./providers/CommentsProvider.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,8 +34,12 @@ const router = createBrowserRouter(
 const App = () => {
   return (
     <RecipeProvider>
-      <RouterProvider router={router} />
-      <Footer />
+      <CommentsProvider>
+        <LikeProvider>
+          <RouterProvider router={router} />
+        </LikeProvider>
+        <Footer />
+      </CommentsProvider>
     </RecipeProvider>
   );
 };

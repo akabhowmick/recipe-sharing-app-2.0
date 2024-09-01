@@ -15,9 +15,16 @@ export interface Recipe {
   user?: RecipeAppUser;
 }
 
-
 export interface Like {
-  user: RecipeAppUser; 
+  user: RecipeAppUser;
   recipe: Recipe;
-  created_at: Date; 
+  created_at: Date;
+}
+
+export interface Comment {
+  id?: number;
+  user: RecipeAppUser;
+  recipe: Recipe;
+  content: string;
+  created_at: Date;
 }
