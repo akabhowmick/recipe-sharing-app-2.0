@@ -23,6 +23,8 @@ As an Indian-American married to a Korean-American, my wife and I often find our
 2. Logout from your account
 3. Post new recipes when logged in 
 4. View all recipes
+5. Users can delete and update their recipes
+6. For all recipes, the users can upload and display their unique images 
 
 ## Backend Setup
 
@@ -75,7 +77,7 @@ python3 manage.py migrate
 6. Start the Development Server:
 
 ```bash
-python manage.py runserver
+python3 manage.py runserver
 ```
 
 ## Frontend Setup
@@ -102,24 +104,13 @@ npm run dev
 
 ## Future Features
 
-1. Recipe Management:
-
-   Allow users to update or delete their recipes, ensuring they have full control over their content.
-   => two more views in the django paths 
-
-2. Profile Management:
+1. Profile Management:
 
    Enable users to update or delete their profiles, giving them the ability to manage their presence on the platform.
-   => fix login, register 
    => allow users to put more information into their profile 
-   
-
-3. Image Uploads:
-
-   Introduce a feature for users to upload images for their recipes, adding a visual element to the culinary creations.
    => just finish after changing the main image path
 
-4. Social Interactions:
+2. Social Interactions:
 
    Expand the app's social features, allowing users to share recipes on other platforms, like, favorite, bookmark, and comment on recipes. This will foster a community of food enthusiasts and encourage engagement.
    => favorite recipe [should be its own table and endpoint]

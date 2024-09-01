@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Recipe } from "../../types/interfaces";
-import { generateRandomImage } from "../../MockData/RandomImage";
 import { useState } from "react";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -81,7 +80,7 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
           </MenuItem>
         </Menu>
       </div>
-      <img className="w-full" src={generateRandomImage()} alt={`Recipe: ${recipe.title} image`} />
+      <img className="w-full" src={recipe.image} alt={`Recipe: ${recipe.title} image`} />
       <div className="card-content px-6 py-4">
         <div className="font-bold text-xl mb-2">{recipe.title}</div>
         <p className="text-gray-700 mb-1 text-base">Description: {recipe.description}</p>

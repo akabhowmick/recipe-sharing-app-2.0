@@ -1,8 +1,13 @@
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views import View
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from .serializers import LikeSerializer, CommentSerializer
 from django.utils.decorators import method_decorator
-from .models import Recipe
+from .models import Recipe, Like, Comment
 import json
 
 
@@ -101,3 +106,87 @@ class RecipeView(View):
 
         recipe.delete()
         return HttpResponse(status=204)
+
+
+class LikeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, recipe_id):
+        recipe = Recipe.objects.get(id=recipe_id)
+        like, created = Like.objects.get_or_create(user=request.user, recipe=recipe)
+        if not created:
+            return Response(
+                {"detail": "You have already liked this recipe."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return Response(LikeSerializer(like).data, status=status.HTTP_201_CREATED)
+
+    def delete(self, request, recipe_id):
+        recipe = Recipe.objects.get(id=recipe_id)
+        like = Like.objects.filter(user=request.user, recipe=recipe).first()
+        if like:
+            like.delete()
+            return Response(
+                {"detail": "Like removed."}, status=status.HTTP_204_NO_CONTENT
+            )
+        return Response(
+            {"detail": "Like not found."}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class CommentView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, recipe_id):
+        recipe = Recipe.objects.get(id=recipe_id)
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user, recipe=recipe)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, recipe_id):
+        """Retrieve all comments for a recipe."""
+        recipe = Recipe.objects.get(id=recipe_id)
+        comments = Comment.objects.filter(recipe=recipe)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, recipe_id, comment_id):
+        """Update an existing comment."""
+        try:
+            comment = Comment.objects.get(
+                id=comment_id, recipe__id=recipe_id, user=request.user
+            )
+        except Comment.DoesNotExist:
+            return Response(
+                {
+                    "detail": "Comment not found or you do not have permission to edit this comment."
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = CommentSerializer(comment, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, recipe_id, comment_id):
+        """Delete a comment."""
+        try:
+            comment = Comment.objects.get(
+                id=comment_id, recipe__id=recipe_id, user=request.user
+            )
+        except Comment.DoesNotExist:
+            return Response(
+                {
+                    "detail": "Comment not found or you do not have permission to delete this comment."
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        comment.delete()
+        return Response(
+            {"detail": "Comment deleted."}, status=status.HTTP_204_NO_CONTENT
+        )

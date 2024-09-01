@@ -1,3 +1,8 @@
+export interface RecipeAppUser {
+  email: string;
+  name: string;
+}
+
 export interface Recipe {
   id?: number;
   title: string;
@@ -7,4 +12,12 @@ export interface Recipe {
   cuisine_type: string;
   description: string;
   fun_fact: string;
+  user?: RecipeAppUser;
+}
+
+
+export interface Like {
+  user: RecipeAppUser; 
+  recipe: Recipe;
+  created_at: Date; 
 }
