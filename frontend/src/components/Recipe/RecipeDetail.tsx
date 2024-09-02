@@ -1,10 +1,12 @@
 import { generateRandomImage } from "../../MockData/RandomImage";
 import { useAuthContext } from "../../providers/AuthProvider";
 import { Recipe } from "../../types/interfaces";
+import CommentsList from "./Comments/CommentsList";
 
 const RecipeDetail = ({ recipe }: { recipe: Recipe }) => {
   const { user } = useAuthContext();
-  const { title, ingredients, instructions } = recipe;
+  const { title, ingredients, instructions, id } = recipe; // Destructure id to pass to CommentsList
+
   return (
     <div className="m-10 min-h-screen">
       <div className="w-full lg:max-w-full lg:flex justify-center">
@@ -36,13 +38,16 @@ const RecipeDetail = ({ recipe }: { recipe: Recipe }) => {
                 <ul>
                   {instructions.split(". ").map((instruction, index) => (
                     <li className="text-gray-600" key={index}>
-                      Step#{index + 1} {instruction}
+                      Step #{index + 1}: {instruction}
                     </li>
                   ))}
                 </ul>
               </div>
             </div>
           </div>
+
+          {/* Comments List */}
+          <CommentsList recipeId={id!} />
         </div>
       </div>
     </div>

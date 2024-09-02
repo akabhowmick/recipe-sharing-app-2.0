@@ -9,7 +9,11 @@ interface CommentsContextType {
   setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
   fetchComments: (recipeId: number) => Promise<void>;
   addComment: (recipeId: number, newComment: Partial<Comment>) => Promise<number>;
-  updateComment: (recipeId: number, commentId: number, updatedComment: Partial<Comment>) => Promise<number>;
+  updateComment: (
+    recipeId: number,
+    commentId: number,
+    updatedComment: Partial<Comment>
+  ) => Promise<number>;
   deleteComment: (recipeId: number, commentId: number) => Promise<void>;
 }
 
@@ -47,7 +51,11 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // PUT request to update an existing comment
-  const updateComment = async (recipeId: number, commentId: number, updatedComment: Partial<Comment>): Promise<number> => {
+  const updateComment = async (
+    recipeId: number,
+    commentId: number,
+    updatedComment: Partial<Comment>
+  ): Promise<number> => {
     try {
       const response = await axios.put(`${url}${recipeId}/comment/${commentId}/`, updatedComment, {
         headers: {

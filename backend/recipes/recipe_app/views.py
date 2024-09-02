@@ -135,7 +135,6 @@ class LikeView(APIView):
 
 
 class CommentView(APIView):
-    permission_classes = [IsAuthenticated]
 
     def post(self, request, recipe_id):
         recipe = Recipe.objects.get(id=recipe_id)
