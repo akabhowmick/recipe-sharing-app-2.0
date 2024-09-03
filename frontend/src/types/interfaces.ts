@@ -1,4 +1,5 @@
 export interface RecipeAppUser {
+  id?: number;
   email: string;
   name: string;
 }

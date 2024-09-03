@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, ReactNode } from "react";
+import { useState, createContext, useContext, ReactNode, useEffect } from "react";
 import axios from "axios";
 
 interface User {
@@ -22,15 +22,17 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
+  // Helper function to get token from localStorage
+  const getAccessToken = () => localStorage.getItem("accessToken");
+
   // Login function
   const login = async (email: string, password: string) => {
     try {
       const response = await axios.post(`${url}login/`, { email, password });
-      const loggedInUser: User = response.data;
-      setUser(loggedInUser);
-
-      handleToken({ email, password });
-
+      const loggedInUser = response.data;
+      if (loggedInUser) {
+        handleToken({ email, password });
+      }
       return true;
     } catch (error) {
       console.error("Login failed", error);
@@ -40,8 +42,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const handleToken = async (credentials: { email: string; password: string }) => {
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/token/", credentials);
-      const { access, refresh } = response.data;
+      const response = await axios.post(`${url}token/`, credentials);
+      console.log(response);
+      const { access, refresh, user } = response.data;
+      setUser(user);
       localStorage.setItem("accessToken", access);
       localStorage.setItem("refreshToken", refresh);
     } catch (error) {
@@ -49,18 +53,61 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  //  obtain a new one by sending a POST request
-  //   const refreshAccessToken = async () => {
-  //     try {
-  //         const response = await axios.post("http://127.0.0.1:8000/api/token/refresh/", {
-  //             refresh: localStorage.getItem("refreshToken"),
-  //         });
-  //         localStorage.setItem("accessToken", response.data.access);
-  //     } catch (error) {
-  //         console.error("Token refresh error:", error);
-  //         // Handle refresh token expiration (e.g., log the user out)
-  //     }
-  // };
+  const refreshAccessToken = async () => {
+    try {
+      const refreshToken = localStorage.getItem("refreshToken");
+      if (refreshToken) {
+        const response = await axios.post(`${url}token/refresh/`, { refresh: refreshToken });
+        const { access } = response.data;
+        localStorage.setItem("accessToken", access);
+        return access;
+      }
+    } catch (error) {
+      console.error("Token refresh error:", error);
+      logout(); // Optionally log out user if token refresh fails
+    }
+  };
+
+  useEffect(() => {
+    const accessToken = getAccessToken();
+
+    if (accessToken) {
+      // Optionally verify the token's validity here
+      axios
+        .get(`${url}protected/`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          setUser(response.data.user);
+        })
+        .catch(async (error) => {
+          console.error("Error fetching protected data:", error);
+
+          // If access token is expired, refresh it
+          if (error.response?.status === 401) {
+            const newAccessToken = await refreshAccessToken();
+            if (newAccessToken) {
+              // Retry the request with new access token
+              axios
+                .get(`${url}protected/`, {
+                  headers: {
+                    Authorization: `Bearer ${newAccessToken}`,
+                  },
+                })
+                .then((response) => {
+                  setUser(response.data);
+                })
+                .catch((error) => {
+                  console.error("Retry failed:", error);
+                });
+            }
+          }
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Register function
   const register = async (name: string, email: string, password: string) => {
@@ -70,15 +117,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(newUser);
     } catch (error) {
       console.error("Registration failed", error);
-      // Handle registration error (e.g., show a message to the user)
     }
   };
 
   // Logout function
   const logout = () => {
-    // Clear user state
     setUser(null);
-    // Optionally, make a request to the backend to invalidate the session if necessary
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
   };
 
   return (

@@ -1,21 +1,22 @@
 import { useEffect } from "react";
 import { useCommentsContext } from "../../../providers/CommentsProvider";
 import { SingleComment } from "./Comment";
+import { Recipe } from "../../../types/interfaces";
 
-const CommentsList = ({ recipeId }: { recipeId: number }) => {
+const CommentsList = ({ recipe }: { recipe: Recipe }) => {
   const { comments, fetchComments, addComment } = useCommentsContext();
 
   useEffect(() => {
-    fetchComments(recipeId);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recipeId]);
+    fetchComments(recipe.id!);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recipe]);
 
   const handleAddComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const content = formData.get("content")?.toString() || "";
-    await addComment(recipeId, { content });
-    fetchComments(recipeId); // Refresh comments list after adding
+    await addComment(recipe, content);
+    fetchComments(recipe.id!); // Refresh comments list after adding
   };
 
   return (
@@ -25,7 +26,7 @@ const CommentsList = ({ recipeId }: { recipeId: number }) => {
         {comments.map((comment) => {
           return (
             <li key={comment.id}>
-              <SingleComment comment={comment} recipeId={recipeId} />
+              <SingleComment comment={comment} recipeId={recipe.id!} />
             </li>
           );
         })}

@@ -5,7 +5,7 @@ import CommentsList from "./Comments/CommentsList";
 
 const RecipeDetail = ({ recipe }: { recipe: Recipe }) => {
   const { user } = useAuthContext();
-  const { title, ingredients, instructions, id } = recipe; // Destructure id to pass to CommentsList
+  const { title, ingredients, instructions } = recipe; // Destructure id to pass to CommentsList
 
   return (
     <div className="m-10 min-h-screen">
@@ -47,7 +47,7 @@ const RecipeDetail = ({ recipe }: { recipe: Recipe }) => {
           </div>
 
           {/* Comments List */}
-          <CommentsList recipeId={id!} />
+          <CommentsList recipe={recipe} />
         </div>
       </div>
     </div>

@@ -1,0 +1,17 @@
+TODO: 
+1. RECIPES:
+   a. add user tag to recipes
+   b. only creator can edit
+   c. only creator can edit
+   d. make it clickable and hover effects 
+2. Comments:
+   b. only creator can edit
+   c. only creator can edit
+3. Likes
+   a. only creator can unlike
+4. UI redo => https://www.healthymealplans.com/
+
+Bugs: 
+1. When logging in or registering not getting the user id
+2. Display sweet alert errors when things are not working
+  a. When commenting or liking and not logged in 

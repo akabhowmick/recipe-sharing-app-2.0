@@ -1,7 +1,18 @@
 # backend/users/serializers.py
 from rest_framework import serializers
 from django.contrib.auth import authenticate
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import CustomUser
+
+
+# log in through token
+class TokenSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        # Add custom claims
+        token["name"] = user.name
+        return token
 
 
 class UserSerializer(serializers.ModelSerializer):

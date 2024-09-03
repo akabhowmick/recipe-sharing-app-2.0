@@ -18,9 +18,16 @@ const Logout = () => {
   };
 
   return (
-    <button onClick={handleLogout} className="btn btn-primary">
-      Logout
-    </button>
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+        <button
+          onClick={handleLogout}
+          className="bg-blue-500 text-white text-2xl py-4 px-8 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300"
+        >
+          Logout
+        </button>
+      </div>
+    </div>
   );
 };
 

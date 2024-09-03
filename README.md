@@ -115,3 +115,5 @@ npm run dev
    Expand the app's social features, allowing users to share recipes on other platforms, like, favorite, bookmark, and comment on recipes. This will foster a community of food enthusiasts and encourage engagement.
    => favorite recipe [should be its own table and endpoint]
    => comment on recipe [should be its own table and endpoint] 
+
+

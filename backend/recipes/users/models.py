@@ -20,6 +20,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser):
+    id = models.AutoField(primary_key=True)  # Auto-generated unique ID
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
@@ -31,4 +32,4 @@ class CustomUser(AbstractBaseUser):
     REQUIRED_FIELDS = ["name"]
 
     def __str__(self):
-        return self.email
+        return f"User {self.id}: {self.email}"

@@ -3,9 +3,28 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import CustomUser
-from .serializers import UserSerializer, LoginSerializer
+from .serializers import UserSerializer, LoginSerializer, TokenSerializer
 from django.contrib.auth import login as auth_login
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = TokenSerializer
+
+
+class ProtectedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        user_data = {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+        }
+        return Response({"user": user_data})
 
 
 class RegisterView(APIView):

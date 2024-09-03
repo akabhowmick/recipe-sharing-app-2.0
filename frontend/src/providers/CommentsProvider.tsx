@@ -1,6 +1,7 @@
 import { useState, createContext, useContext, ReactNode } from "react";
-import { Comment } from "../types/interfaces";
+import { Comment, Recipe } from "../types/interfaces";
 import axios from "axios";
+import { useAuthContext } from "./AuthProvider";
 
 const url = "http://127.0.0.1:8000/api/recipes/";
 
@@ -8,7 +9,7 @@ interface CommentsContextType {
   comments: Comment[];
   setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
   fetchComments: (recipeId: number) => Promise<void>;
-  addComment: (recipeId: number, newComment: Partial<Comment>) => Promise<number>;
+  addComment: (recipe: Recipe, newComment: string) => Promise<number>;
   updateComment: (
     recipeId: number,
     commentId: number,
@@ -20,6 +21,7 @@ interface CommentsContextType {
 const CommentsContext = createContext<CommentsContextType>({} as CommentsContextType);
 
 export const CommentsProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuthContext();
   const [comments, setComments] = useState<Comment[]>([]);
 
   // Fetch all comments for a specific recipe
@@ -34,9 +36,15 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // POST request to add a new comment to a recipe
-  const addComment = async (recipeId: number, newComment: Partial<Comment>): Promise<number> => {
+  const addComment = async (recipe: Recipe, newComment: string): Promise<number> => {
+    const fullNewComment = {
+      user: user!.id!,
+      recipe: recipe.id!,
+      content: newComment,
+    };
+    console.log(fullNewComment);
     try {
-      const response = await axios.post(`${url}${recipeId}/comment/`, newComment, {
+      const response = await axios.post(`${url}${recipe.id}/comment/`, fullNewComment, {
         headers: {
           "Content-Type": "application/json",
         },

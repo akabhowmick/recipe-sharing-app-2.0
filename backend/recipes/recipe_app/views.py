@@ -2,6 +2,7 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views import View
 from rest_framework import status
+from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -9,6 +10,9 @@ from .serializers import LikeSerializer, CommentSerializer
 from django.utils.decorators import method_decorator
 from .models import Recipe, Like, Comment
 import json
+
+
+CustomUser = get_user_model()
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -109,17 +113,36 @@ class RecipeView(View):
 
 
 class LikeView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def post(self, request, recipe_id):
         recipe = Recipe.objects.get(id=recipe_id)
-        like, created = Like.objects.get_or_create(user=request.user, recipe=recipe)
-        if not created:
+        user_id = request.data.get("user")
+
+        # Validate and get the user
+        try:
+            user = CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
+            return Response(
+                {"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        data = {
+            "user": user.id,
+            "recipe": recipe.id,
+        }
+
+        # Check if the like already exists
+        if Like.objects.filter(user=user, recipe=recipe).exists():
             return Response(
                 {"detail": "You have already liked this recipe."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        return Response(LikeSerializer(like).data, status=status.HTTP_201_CREATED)
+
+        # Serialize and save the like
+        serializer = LikeSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, recipe_id):
         recipe = Recipe.objects.get(id=recipe_id)
@@ -135,12 +158,27 @@ class LikeView(APIView):
 
 
 class CommentView(APIView):
-
     def post(self, request, recipe_id):
         recipe = Recipe.objects.get(id=recipe_id)
-        serializer = CommentSerializer(data=request.data)
+        user_id = request.data.get("user")
+
+        # Validate and get the user
+        try:
+            user = CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
+            return Response(
+                {"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        data = {
+            "user": user.id,
+            "recipe": recipe.id,
+            "content": request.data.get("content"),
+        }
+
+        serializer = CommentSerializer(data=data)
         if serializer.is_valid():
-            serializer.save(user=request.user, recipe=recipe)
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
