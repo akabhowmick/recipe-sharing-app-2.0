@@ -134,7 +134,7 @@ class LikeView(APIView):
         if Like.objects.filter(user=user, recipe=recipe).exists():
             return Response(
                 {"detail": "You have already liked this recipe."},
-                status=status.HTTP_400_BAD_REQUEST,
+                status=status.HTTP_409_DUPLICATE_REQUEST,
             )
 
         # Serialize and save the like
@@ -146,7 +146,18 @@ class LikeView(APIView):
 
     def delete(self, request, recipe_id):
         recipe = Recipe.objects.get(id=recipe_id)
-        like = Like.objects.filter(user=request.user, recipe=recipe).first()
+        user_id = request.data.get("user")
+
+        # Validate and get the user
+        try:
+            user = CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
+            return Response(
+                {"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Use the correct user for filtering
+        like = Like.objects.filter(user=user, recipe=recipe).first()
         if like:
             like.delete()
             return Response(

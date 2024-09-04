@@ -55,3 +55,12 @@ const RecipeDetail = ({ recipe }: { recipe: Recipe }) => {
 };
 
 export default RecipeDetail;
+
+
+// TODO add the following:
+{/* <Typography variant="body2" color="text.secondary">
+          Description: {recipe.description}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Fun Fact: {recipe.fun_fact}
+        </Typography> */}
