@@ -25,6 +25,8 @@ As an Indian-American married to a Korean-American, my wife and I often find our
 4. View all recipes
 5. Users can delete and update their recipes
 6. For all recipes, the users can upload and display their unique images 
+7. Users can post comments, and edit and delete their comments
+8. Users can select their favorite to store and access easily
 
 ## Backend Setup
 
@@ -107,13 +109,8 @@ npm run dev
 1. Profile Management:
 
    Enable users to update or delete their profiles, giving them the ability to manage their presence on the platform.
-   => allow users to put more information into their profile 
-   => just finish after changing the main image path
 
 2. Social Interactions:
 
    Expand the app's social features, allowing users to share recipes on other platforms, like, favorite, bookmark, and comment on recipes. This will foster a community of food enthusiasts and encourage engagement.
-   => favorite recipe [should be its own table and endpoint]
-   => comment on recipe [should be its own table and endpoint] 
-
 

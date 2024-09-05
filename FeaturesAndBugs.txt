@@ -1,7 +1,4 @@
 TODO: 
-2. Comments => do the same as recipes 
-   b. only creator can edit
-   c. only creator can delete 
 3. Likes
    a. only creator can unlike
    b. should display number of likes (?) 

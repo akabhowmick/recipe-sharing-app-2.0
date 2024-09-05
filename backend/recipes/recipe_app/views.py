@@ -44,7 +44,6 @@ class RecipeView(View):
         try:
             data = json.loads(request.body)
             user_id = data.get("userID")
-            print(data)
             # Validate and get the user
             user = get_object_or_404(CustomUser, id=user_id)
 
@@ -224,39 +223,34 @@ class CommentView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, recipe_id, comment_id):
-        """Update an existing comment."""
         try:
-            comment = Comment.objects.get(
-                id=comment_id, recipe__id=recipe_id, user=request.user
-            )
+            comment = Comment.objects.get(id=comment_id, recipe_id=recipe_id)
         except Comment.DoesNotExist:
             return Response(
-                {
-                    "detail": "Comment not found or you do not have permission to edit this comment."
-                },
-                status=status.HTTP_404_NOT_FOUND,
+                {"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = CommentSerializer(comment, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
+        # Update the comment's content
+        updated_content = request.data.get("content")
+        if updated_content:
+            comment.content = updated_content
+            comment.save()
+
+            serializer = CommentSerializer(comment)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(
+            {"error": "No content provided"}, status=status.HTTP_400_BAD_REQUEST
+        )
 
     def delete(self, request, recipe_id, comment_id):
-        """Delete a comment."""
         try:
-            comment = Comment.objects.get(
-                id=comment_id, recipe__id=recipe_id, user=request.user
-            )
+            comment = Comment.objects.get(id=comment_id, recipe_id=recipe_id)
         except Comment.DoesNotExist:
             return Response(
-                {
-                    "detail": "Comment not found or you do not have permission to delete this comment."
-                },
+                {"detail": "Comment not found."},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
         comment.delete()
         return Response(
             {"detail": "Comment deleted."}, status=status.HTTP_204_NO_CONTENT

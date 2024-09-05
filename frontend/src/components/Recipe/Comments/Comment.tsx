@@ -37,7 +37,6 @@ export const SingleComment = ({ comment, recipeId }: { comment: Comment; recipeI
   useEffect(() => {
     const checkUser = async () => {
       const userLoggedIn = await setUserOnRefresh();
-      console.log(typeof(comment.user));
       if (userLoggedIn && user && comment.user === user.id) {
         setCanUpdateAndDelete(true);
       } else {

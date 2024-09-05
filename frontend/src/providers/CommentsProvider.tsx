@@ -10,11 +10,7 @@ interface CommentsContextType {
   setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
   fetchComments: (recipeId: number) => Promise<void>;
   addComment: (recipe: Recipe, newComment: string) => Promise<number>;
-  updateComment: (
-    recipeId: number,
-    commentId: number,
-    updatedComment: string,
-  ) => Promise<number>;
+  updateComment: (recipeId: number, commentId: number, updatedComment: string) => Promise<number>;
   deleteComment: (recipeId: number, commentId: number) => Promise<void>;
 }
 
@@ -62,16 +58,22 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   const updateComment = async (
     recipeId: number,
     commentId: number,
-    updatedComment: string, 
+    updatedComment: string
   ): Promise<number> => {
-    // TODO fix this error
     try {
-      const response = await axios.put(`${url}${recipeId}/comment/${commentId}/`, updatedComment, {
-        headers: {
-          "Content-Type": "application/json",
+      const response = await axios.patch(
+        `${url}${recipeId}/comment/${commentId}/`,
+        {
+          content: updatedComment,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const updatedCommentData = response.data;
+
       setComments((prevComments) =>
         prevComments.map((comment) => (comment.id === commentId ? updatedCommentData : comment))
       );
