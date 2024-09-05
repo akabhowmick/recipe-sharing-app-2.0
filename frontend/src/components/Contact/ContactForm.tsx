@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { contactMessage } from "../UserAlert";
+import { contactMessage } from "../UserAlert.ts";
 
 export const ContactForm = () => {
   const [email, setEmail] = useState("");

@@ -25,3 +25,11 @@ export const logOutMessage = () => {
     icon: "info",
   });
 };
+
+export const unauthorizedMessage = () => {
+  Swal.fire({
+    title: "Unauthorized!",
+    text: "You don't have the necessary permissions to access this resource.",
+    icon: "error",
+  });
+}

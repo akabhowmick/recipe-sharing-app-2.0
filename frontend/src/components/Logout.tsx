@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../providers/AuthProvider";
-import { errorMessage, logOutMessage } from "./UserAlert";
+import { errorMessage, logOutMessage } from "./UserAlert.ts";
 
 const Logout = () => {
   const { logout } = useAuthContext();

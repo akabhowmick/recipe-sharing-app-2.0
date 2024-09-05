@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../providers/AuthProvider";
-import { successMessage, errorMessage } from "../UserAlert";
+import { successMessage, errorMessage } from "../UserAlert.ts";
 
 export const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");

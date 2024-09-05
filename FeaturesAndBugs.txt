@@ -1,12 +1,9 @@
 TODO: 
 1. RECIPES:
-   a. add user tag to recipes
-   b. only creator can edit
-   c. only creator can edit
-   d. make it clickable and hover effects 
+   d. add hover effects 
 2. Comments:
    b. only creator can edit
-   c. only creator can edit
+   c. only creator can delete 
 3. Likes
    a. only creator can unlike
    b. should display number of likes (?) 

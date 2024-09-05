@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Recipe } from "../../types/interfaces";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardMedia,
@@ -12,20 +12,36 @@ import {
   Menu,
   MenuItem,
   Box,
+  Divider,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import Swal from "sweetalert2";
 import { useRecipeContext } from "../../providers/RecipesProvider";
 import { useLikeContext } from "../../providers/LikesProvider";
+import { useAuthContext } from "../../providers/AuthProvider";
 
 export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
+  const { user, setUserOnRefresh } = useAuthContext();
   const { deleteRecipe } = useRecipeContext();
   const { addNewLike, deleteLike } = useLikeContext();
   const navigate = useNavigate();
   const [isLiked, setIsLiked] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [canUpdateAndDelete, setCanUpdateAndDelete] = useState(false);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const userLoggedIn = await setUserOnRefresh();
+      if (userLoggedIn && user && recipe.user_id === user.id) {
+        setCanUpdateAndDelete(true);
+      } else {
+        setCanUpdateAndDelete(false);
+      }
+    };
+    checkUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleFavoriteClick = () => {
     if (!isLiked) {
@@ -34,10 +50,6 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
       deleteLike(recipe.id!);
     }
     setIsLiked(!isLiked);
-  };
-
-  const handleCommentClick = () => {
-    Swal.fire("Hey user!", "This feature is coming soon!", "warning");
   };
 
   const handleDeleteClick = () => {
@@ -87,12 +99,20 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
         </Typography>
         <Typography
           variant="body2"
-          color="text.secondary"
+          color="orange"
           sx={{ marginLeft: 1, fontWeight: 600, textAlign: "end" }}
         >
           #{recipe.cuisine_type}
         </Typography>
       </CardContent>
+      <Divider
+        sx={{
+          borderBottomWidth: "3px",
+          borderColor: "purple",
+          width: "80%",
+          margin: "0 auto",
+        }}
+      />
       <CardActions disableSpacing>
         <Box sx={{ display: "flex", justifyContent: "space-evenly", width: "100%" }}>
           <IconButton
@@ -105,28 +125,25 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
             {isLiked ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
           </IconButton>
           <IconButton
-            aria-label="add to favorites"
+            aria-label="learn more about this recipe "
             onClick={(e) => {
               e.stopPropagation();
-              handleFavoriteClick();
+              handleCardClick();
             }}
           >
-            <ReadMoreIcon
+            <ReadMoreIcon />
+          </IconButton>
+          {canUpdateAndDelete && (
+            <IconButton
+              aria-label="more actions "
               onClick={(e) => {
                 e.stopPropagation();
-                handleCardClick();
+                handleMenuClick(e);
               }}
-            />
-          </IconButton>
-          <IconButton
-            aria-label="more"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleMenuClick(e);
-            }}
-          >
-            <MoreVertIcon />
-          </IconButton>
+            >
+              <MoreVertIcon />
+            </IconButton>
+          )}
         </Box>
       </CardActions>
       <Menu
@@ -135,14 +152,6 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
         onClose={handleMenuClose}
         onClick={(e) => e.stopPropagation()}
       >
-        <MenuItem
-          onClick={() => {
-            handleCommentClick();
-            handleMenuClose();
-          }}
-        >
-          Comment
-        </MenuItem>
         <MenuItem
           onClick={() => {
             handleEditClick();

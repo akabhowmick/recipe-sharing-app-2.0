@@ -2,14 +2,13 @@ import { useNavigate } from "react-router-dom";
 import RecipeForm from "../components/Recipe/RecipeForm";
 import { useRecipeContext } from "../providers/RecipesProvider";
 import Swal from "sweetalert2";
-import { errorMessage } from "../components/UserAlert";
-// import { useAuthContext } from "../providers/AuthProvider";
-// import { useEffect } from "react";
-
+import { errorMessage } from "../components/UserAlert.ts";
+import { useAuthContext } from "../providers/AuthProvider";
+import { useEffect } from "react";
 
 // TODO import the user so only registered users can edit their own recipes
 export const CreateRecipePage = () => {
-  // const { user } = useAuthContext();
+  const { setUserOnRefresh } = useAuthContext();
   const { addNewRecipe } = useRecipeContext();
   const navigate = useNavigate();
 
@@ -20,7 +19,8 @@ export const CreateRecipePage = () => {
     image: string,
     cuisine_type: string,
     description: string,
-    fun_fact: string
+    fun_fact: string,
+    userID: number
   ) => {
     const newRecipe = {
       title,
@@ -30,6 +30,7 @@ export const CreateRecipePage = () => {
       cuisine_type,
       description,
       fun_fact,
+      userID,
     };
 
     try {
@@ -49,11 +50,15 @@ export const CreateRecipePage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     navigate("/login");
-  //   }
-  // }, [navigate, user]);
+  useEffect(() => {
+    const redirectToLogin = async () => {
+      const userLoggedIn = await setUserOnRefresh();
+      if (!userLoggedIn) {
+        navigate("/login");
+      }
+    };
+    redirectToLogin();
+  }, [navigate, setUserOnRefresh]);
 
   return (
     <div>

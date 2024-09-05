@@ -4,7 +4,7 @@ from users.models import CustomUser
 
 class Recipe(models.Model):
     id = models.AutoField(primary_key=True)  # Auto-generated unique ID
-    # user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     ingredients = models.TextField()
     instructions = models.TextField()

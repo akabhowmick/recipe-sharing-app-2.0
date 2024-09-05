@@ -12,6 +12,7 @@ interface AuthContextType {
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   login: (email: string, password: string) => Promise<boolean>;
   register: (name: string, email: string, password: string) => Promise<void>;
+  setUserOnRefresh: () => Promise<boolean>;
   logout: () => void;
 }
 
@@ -68,44 +69,55 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  useEffect(() => {
+  const setUserOnRefresh: () => Promise<boolean> = async () => {
     const accessToken = getAccessToken();
 
     if (accessToken) {
-      // Optionally verify the token's validity here
-      axios
-        .get(`${url}protected/`, {
+      try {
+        // Make the request with the existing access token
+        const response = await axios.get(`${url}protected/`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        })
-        .then((response) => {
-          setUser(response.data.user);
-        })
-        .catch(async (error) => {
-          console.error("Error fetching protected data:", error);
+        });
 
-          // If access token is expired, refresh it
-          if (error.response?.status === 401) {
-            const newAccessToken = await refreshAccessToken();
-            if (newAccessToken) {
+        setUser(response.data.user);
+        return true; // User successfully fetched
+      } catch (error: unknown) {
+        // Handle error as an unknown type
+        if (isAxiosError(error) && error.response?.status === 401) {
+          const newAccessToken = await refreshAccessToken();
+          if (newAccessToken) {
+            try {
               // Retry the request with new access token
-              axios
-                .get(`${url}protected/`, {
-                  headers: {
-                    Authorization: `Bearer ${newAccessToken}`,
-                  },
-                })
-                .then((response) => {
-                  setUser(response.data);
-                })
-                .catch((error) => {
-                  console.error("Retry failed:", error);
-                });
+              const retryResponse = await axios.get(`${url}protected/`, {
+                headers: {
+                  Authorization: `Bearer ${newAccessToken}`,
+                },
+              });
+
+              setUser(retryResponse.data.user);
+              return true; // User successfully fetched with refreshed token
+            } catch (retryError: unknown) {
+              console.error("Retry failed:", retryError);
             }
           }
-        });
+        } else {
+          console.error("An error occurred:", error);
+        }
+      }
     }
+
+    return false; // If the process failed at any point
+  };
+
+  // Custom type guard for narrowing unknown error to AxiosError
+  function isAxiosError(error: unknown): error is import("axios").AxiosError {
+    return (error as import("axios").AxiosError).isAxiosError !== undefined;
+  }
+
+  useEffect(() => {
+    setUserOnRefresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -135,6 +147,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         register,
         logout,
+        setUserOnRefresh,
       }}
     >
       {children}

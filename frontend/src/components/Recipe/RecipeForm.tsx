@@ -3,6 +3,7 @@ import { ImageUploader } from "./FormUtils/ImageUploader";
 import { v4 } from "uuid";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../utils/firebaseConfig";
+import { useAuthContext } from "../../providers/AuthProvider";
 
 interface RecipeFormProps {
   initialTitle?: string;
@@ -15,7 +16,8 @@ interface RecipeFormProps {
     imageUrl: string,
     cuisine_type: string,
     description: string,
-    fun_fact: string
+    fun_fact: string,
+    user: number
   ) => void;
 }
 
@@ -25,6 +27,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
   initialInstructions = "",
   onSubmit,
 }) => {
+  const { user } = useAuthContext();
   const [title, setTitle] = useState(initialTitle);
   const [ingredients, setIngredients] = useState(initialIngredients);
   const [instructions, setInstructions] = useState(initialInstructions);
@@ -55,7 +58,6 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setImageURL(downloadURL);
-            // Call onSubmit after the image is uploaded
             onSubmit(
               title,
               ingredients,
@@ -63,14 +65,12 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
               downloadURL,
               cuisine_type,
               fun_fact,
-              description
+              description,
+              parseInt(user!.id!)
             );
           });
         }
       );
-    } else {
-      // Call onSubmit without imageURL if no image is selected
-      onSubmit(title, ingredients, instructions, imageURL, cuisine_type, fun_fact, description);
     }
   };
 

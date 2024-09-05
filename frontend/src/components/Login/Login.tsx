@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuthContext } from "../../providers/AuthProvider";
-import { errorMessage, successMessage } from "../UserAlert";
+import { errorMessage, successMessage } from "../UserAlert.ts";
 import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {

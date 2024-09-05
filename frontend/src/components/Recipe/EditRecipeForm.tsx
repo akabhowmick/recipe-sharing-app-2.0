@@ -7,7 +7,8 @@ import { Recipe } from "../../types/interfaces";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useRecipeContext } from "../../providers/RecipesProvider";
-import { errorMessage } from "../UserAlert";
+import { errorMessage } from "../UserAlert.ts";
+import { useAuthContext } from "../../providers/AuthProvider";
 
 export const EditRecipeForm = ({ recipeToEdit }: { recipeToEdit: Recipe }) => {
   // const { user } = useAuthContext();
@@ -24,7 +25,8 @@ export const EditRecipeForm = ({ recipeToEdit }: { recipeToEdit: Recipe }) => {
     image: string,
     cuisine_type: string,
     description: string,
-    fun_fact: string
+    fun_fact: string,
+    userId: number
   ) => {
     const editedRecipe = {
       id,
@@ -35,6 +37,7 @@ export const EditRecipeForm = ({ recipeToEdit }: { recipeToEdit: Recipe }) => {
       cuisine_type,
       description,
       fun_fact,
+      userId,
     };
 
     try {
@@ -53,7 +56,7 @@ export const EditRecipeForm = ({ recipeToEdit }: { recipeToEdit: Recipe }) => {
       });
     }
   };
-
+  const { user } = useAuthContext();
   const [title, setTitle] = useState(recipeToEdit.title);
   const [ingredients, setIngredients] = useState(recipeToEdit.ingredients);
   const [instructions, setInstructions] = useState(recipeToEdit.instructions);
@@ -94,7 +97,8 @@ export const EditRecipeForm = ({ recipeToEdit }: { recipeToEdit: Recipe }) => {
               downloadURL,
               cuisine_type,
               fun_fact,
-              description
+              description,
+              parseInt(user!.id)
             );
           });
         }
@@ -109,7 +113,8 @@ export const EditRecipeForm = ({ recipeToEdit }: { recipeToEdit: Recipe }) => {
         imageURL,
         cuisine_type,
         description,
-        fun_fact
+        fun_fact,
+        parseInt(user!.id)
       );
     }
   };

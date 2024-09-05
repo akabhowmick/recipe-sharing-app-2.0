@@ -10,6 +10,8 @@ from .serializers import LikeSerializer, CommentSerializer
 from django.utils.decorators import method_decorator
 from .models import Recipe, Like, Comment
 import json
+from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
 
 
 CustomUser = get_user_model()
@@ -21,38 +23,8 @@ class RecipeView(View):
     def get(self, request, *args, **kwargs):
         recipe_id = kwargs.get("id")
         if recipe_id:
-            try:
-                recipe = Recipe.objects.get(id=recipe_id)
-                data = {
-                    "id": recipe.id,
-                    "title": recipe.title,
-                    "ingredients": recipe.ingredients,
-                    "instructions": recipe.instructions,
-                    "image": recipe.image,
-                    "cuisine_type": recipe.cuisine_type,
-                    "description": recipe.description,
-                    "fun_fact": recipe.fun_fact,
-                }
-                return JsonResponse(data)
-            except Recipe.DoesNotExist:
-                return JsonResponse({"error": "Recipe not found"}, status=404)
-        else:
-            recipes = Recipe.objects.all().values()
-            return JsonResponse(list(recipes), safe=False)
-
-    def post(self, request, *args, **kwargs):
-        data = json.loads(request.body)
-        recipe = Recipe.objects.create(
-            title=data["title"],
-            ingredients=data["ingredients"],
-            instructions=data["instructions"],
-            image=data.get("image", ""),
-            cuisine_type=data["cuisine_type"],
-            description=data["description"],
-            fun_fact=data["fun_fact"],
-        )
-        return JsonResponse(
-            {
+            recipe = get_object_or_404(Recipe, id=recipe_id)
+            data = {
                 "id": recipe.id,
                 "title": recipe.title,
                 "ingredients": recipe.ingredients,
@@ -61,11 +33,57 @@ class RecipeView(View):
                 "cuisine_type": recipe.cuisine_type,
                 "description": recipe.description,
                 "fun_fact": recipe.fun_fact,
-            },
-            status=201,
-        )
+                "user": recipe.user.id,
+            }
+            return JsonResponse(data)
+        else:
+            recipes = Recipe.objects.all().values()
+            return JsonResponse(list(recipes), safe=False)
 
-    def put(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            user_id = data.get("userID")
+            print(data)
+            # Validate and get the user
+            user = get_object_or_404(CustomUser, id=user_id)
+
+            # Create the recipe
+            recipe = Recipe.objects.create(
+                title=data["title"],
+                ingredients=data["ingredients"],
+                instructions=data["instructions"],
+                image=data.get("image", ""),
+                cuisine_type=data["cuisine_type"],
+                description=data["description"],
+                fun_fact=data["fun_fact"],
+                user=user,
+            )
+
+            response_data = {
+                "id": recipe.id,
+                "title": recipe.title,
+                "ingredients": recipe.ingredients,
+                "instructions": recipe.instructions,
+                "image": recipe.image,
+                "cuisine_type": recipe.cuisine_type,
+                "description": recipe.description,
+                "fun_fact": recipe.fun_fact,
+                "user": recipe.user.id,
+            }
+
+            return JsonResponse(response_data, status=201)
+
+        except ValidationError as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    def patch(self, request, *args, **kwargs):
         recipe_id = kwargs.get("id")
         if not recipe_id:
             return JsonResponse({"error": "Recipe ID is required"}, status=400)
@@ -74,6 +92,12 @@ class RecipeView(View):
             recipe = Recipe.objects.get(id=recipe_id)
         except Recipe.DoesNotExist:
             return JsonResponse({"error": "Recipe not found"}, status=404)
+
+        # Check if the logged-in user is the owner of the recipe
+        if recipe.user != request.user:
+            return JsonResponse(
+                {"error": "You are not authorized to edit this recipe"}, status=403
+            )
 
         data = json.loads(request.body)
         recipe.title = data.get("title", recipe.title)
@@ -107,6 +131,12 @@ class RecipeView(View):
             recipe = Recipe.objects.get(id=recipe_id)
         except Recipe.DoesNotExist:
             return JsonResponse({"error": "Recipe not found"}, status=404)
+
+        # Check if the logged-in user is the owner of the recipe
+        if recipe.user != request.user:
+            return JsonResponse(
+                {"error": "You are not authorized to delete this recipe"}, status=403
+            )
 
         recipe.delete()
         return HttpResponse(status=204)
@@ -200,7 +230,7 @@ class CommentView(APIView):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def put(self, request, recipe_id, comment_id):
+    def patch(self, request, recipe_id, comment_id):
         """Update an existing comment."""
         try:
             comment = Comment.objects.get(

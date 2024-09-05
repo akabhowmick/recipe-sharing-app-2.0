@@ -14,6 +14,7 @@ export interface Recipe {
   description: string;
   fun_fact: string;
   user?: RecipeAppUser;
+  user_id?: string;
 }
 
 export interface Like {
