@@ -13,7 +13,7 @@ interface CommentsContextType {
   updateComment: (
     recipeId: number,
     commentId: number,
-    updatedComment: Partial<Comment>
+    updatedComment: string,
   ) => Promise<number>;
   deleteComment: (recipeId: number, commentId: number) => Promise<void>;
 }
@@ -62,8 +62,9 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   const updateComment = async (
     recipeId: number,
     commentId: number,
-    updatedComment: Partial<Comment>
+    updatedComment: string, 
   ): Promise<number> => {
+    // TODO fix this error
     try {
       const response = await axios.put(`${url}${recipeId}/comment/${commentId}/`, updatedComment, {
         headers: {

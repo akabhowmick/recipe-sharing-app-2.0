@@ -26,7 +26,8 @@ export interface Like {
 
 export interface Comment {
   id?: number;
-  user: RecipeAppUser;
+  user?: string;
+  userId?: string;
   recipe: Recipe;
   content: string;
   created_at: Date;

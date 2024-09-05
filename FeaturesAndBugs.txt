@@ -1,13 +1,17 @@
 TODO: 
-1. RECIPES:
-   d. add hover effects 
-2. Comments:
+2. Comments => do the same as recipes 
    b. only creator can edit
    c. only creator can delete 
 3. Likes
    a. only creator can unlike
    b. should display number of likes (?) 
 4. UI redo => https://www.healthymealplans.com/
+   a. banner redo 
+   c. profile display 
+   d. header 
+   e. home page 
+   f. recipe card - hover effects 
+
 
 Bugs: 
 1. When logging in or registering not getting the user id

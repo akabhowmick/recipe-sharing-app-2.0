@@ -1,8 +1,6 @@
 import { useState, createContext, useContext, ReactNode, useEffect } from "react";
 import { Recipe } from "../types/interfaces";
 import axios from "axios";
-import { useAuthContext } from "./AuthProvider";
-import { unauthorizedMessage } from "../components/UserAlert.ts";
 
 const url = "http://127.0.0.1:8000/api/recipes/";
 
@@ -17,7 +15,6 @@ interface RecipeContextType {
 const RecipeContext = createContext<RecipeContextType>({} as RecipeContextType);
 
 export const RecipeProvider = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuthContext();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
 
   // POST request to add a new recipe
@@ -41,11 +38,6 @@ export const RecipeProvider = ({ children }: { children: ReactNode }) => {
   // PUT request to update an existing recipe
   const updateRecipe = async (id: number, updatedRecipe: Recipe): Promise<number> => {
     try {
-      console.log("updateRecipe", id, updatedRecipe, recipes.find((recipe) => recipe.id! === id)!.user!.id!, parseInt(user!.id!));
-      if (parseInt(user!.id!) !== recipes.find((recipe) => recipe.id! === id)!.user!.id!) {
-        unauthorizedMessage();
-        throw new Error("Unauthorized to edit this recipe");
-      }
       const response = await axios.patch(`${url}${id}/`, updatedRecipe, {
         headers: {
           "Content-Type": "application/json",

@@ -93,12 +93,6 @@ class RecipeView(View):
         except Recipe.DoesNotExist:
             return JsonResponse({"error": "Recipe not found"}, status=404)
 
-        # Check if the logged-in user is the owner of the recipe
-        if recipe.user != request.user:
-            return JsonResponse(
-                {"error": "You are not authorized to edit this recipe"}, status=403
-            )
-
         data = json.loads(request.body)
         recipe.title = data.get("title", recipe.title)
         recipe.ingredients = data.get("ingredients", recipe.ingredients)
@@ -132,17 +126,16 @@ class RecipeView(View):
         except Recipe.DoesNotExist:
             return JsonResponse({"error": "Recipe not found"}, status=404)
 
-        # Check if the logged-in user is the owner of the recipe
-        if recipe.user != request.user:
-            return JsonResponse(
-                {"error": "You are not authorized to delete this recipe"}, status=403
-            )
-
         recipe.delete()
         return HttpResponse(status=204)
 
 
 class LikeView(APIView):
+    def get(self, request):
+        likes = Like.objects.all()
+        serializer = LikeSerializer(likes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def post(self, request, recipe_id):
         recipe = Recipe.objects.get(id=recipe_id)
         user_id = request.data.get("user")
