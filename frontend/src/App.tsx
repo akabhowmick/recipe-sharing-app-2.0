@@ -17,12 +17,14 @@ import { EditRecipePage } from "./pages/EditRecipePage.tsx";
 import { LikeProvider } from "./providers/LikesProvider.tsx";
 import { CommentsProvider } from "./providers/CommentsProvider.tsx";
 import { AllRecipesPage } from "./pages/AllRecipesPage.tsx";
+import { AboutUsPage } from "./pages/AboutUsPage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Navbar />}>
       <Route path="/" element={<HomePage />} />
       <Route path="/allrecipes" element={<AllRecipesPage />} />
+      <Route path="/about" element={<AboutUsPage />} />
       <Route path="/recipes/:id" element={<RecipePage />} />
       <Route path="/recipes/:id/edit" element={<EditRecipePage />} />
       <Route path="/create" element={<CreateRecipePage />} />

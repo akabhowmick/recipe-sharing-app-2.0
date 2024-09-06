@@ -31,12 +31,6 @@ export const SiteDescription = () => {
         <div className="flex flex-col md:flex-row items-center justify-between">
           {reasonsToJoin}
         </div>
-        <div className="flex flex-col items-center mt-8">
-          <h2 className="text-3xl font-bold text-white mb-4">Join the Recipe Sharing Community</h2>
-          <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            SIGN UP
-          </button>
-        </div>
       </div>
     </div>
   );

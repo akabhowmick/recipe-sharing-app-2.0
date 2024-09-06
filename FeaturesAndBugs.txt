@@ -2,10 +2,6 @@ TODO:
 3. Likes
    a. only creator can unlike
    b. should display number of likes (?) 
-4. UI redo => hh
-   c. profile display 
-   d. header 
-   f. recipe card - hover effects 
 
 
 Bugs: 
@@ -14,7 +10,7 @@ Bugs:
   a. When commenting or liking and not logged in 
 3. Delete methods not working => remove auth from django 
 4. Register returning an error but it is working just not setting up state 
-5. For sign up and other buttons add a swal alert 
+5. About Us page 
 
 
 Post Requests:
