@@ -130,13 +130,14 @@ class RecipeView(View):
 
 
 class LikeView(APIView):
-    def get(self, request):
-        likes = Like.objects.all()
-        serializer = LikeSerializer(likes, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
     def post(self, request, recipe_id):
-        recipe = Recipe.objects.get(id=recipe_id)
+        try:
+            recipe = Recipe.objects.get(id=recipe_id)
+        except Recipe.DoesNotExist:
+            return Response(
+                {"error": "Recipe does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+
         user_id = request.data.get("user")
 
         # Validate and get the user
@@ -156,7 +157,7 @@ class LikeView(APIView):
         if Like.objects.filter(user=user, recipe=recipe).exists():
             return Response(
                 {"detail": "You have already liked this recipe."},
-                status=status.HTTP_409_DUPLICATE_REQUEST,
+                status=status.HTTP_409_CONFLICT,
             )
 
         # Serialize and save the like
@@ -166,8 +167,44 @@ class LikeView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def get(self, request, recipe_id=None):
+        """
+        If recipe_id is provided, get all likes for a specific recipe.
+        Otherwise, get all likes by a specific user (requires user_id as a query param).
+        """
+        user_id = request.query_params.get("user")
+        if recipe_id:
+            # Get likes filtered by recipe
+            try:
+                recipe = Recipe.objects.get(id=recipe_id)
+            except Recipe.DoesNotExist:
+                return Response(
+                    {"error": "Recipe does not exist."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            likes = Like.objects.filter(recipe=recipe).select_related('user')
+            serializer = LikeSerializer(likes, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        elif user_id:
+            # Get likes filtered by user
+            try:
+                user = CustomUser.objects.get(id=user_id)
+            except CustomUser.DoesNotExist:
+                return Response(
+                    {"error": "User does not exist."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            likes = Like.objects.filter(user=user).select_related('recipe')
+            serializer = LikeSerializer(likes, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {"error": "Either recipe_id or user_id is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
     def delete(self, request, recipe_id):
-        recipe = Recipe.objects.get(id=recipe_id)
+        """Delete a like by the user for a specific recipe."""
         user_id = request.data.get("user")
 
         # Validate and get the user
@@ -178,16 +215,37 @@ class LikeView(APIView):
                 {"error": "User does not exist"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Use the correct user for filtering
-        like = Like.objects.filter(user=user, recipe=recipe).first()
-        if like:
-            like.delete()
+        # Try to get the like by user and recipe
+        try:
+            like = Like.objects.get(user=user, recipe_id=recipe_id)
+        except Like.DoesNotExist:
             return Response(
-                {"detail": "Like removed."}, status=status.HTTP_204_NO_CONTENT
+                {
+                    "error": "Like does not exist or you do not have permission to delete it."
+                },
+                status=status.HTTP_404_NOT_FOUND,
             )
+
+        # Delete the like
+        like.delete()
+
         return Response(
-            {"detail": "Like not found."}, status=status.HTTP_400_BAD_REQUEST
+            {"detail": "Like deleted successfully."}, status=status.HTTP_204_NO_CONTENT
         )
+
+    def get_likes_by_recipe(self, request, recipe_id):
+        """Get all likes for a specific recipe."""
+        try:
+            recipe = Recipe.objects.get(id=recipe_id)
+        except Recipe.DoesNotExist:
+            return Response(
+                {"error": "Recipe does not exist."}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        likes = Like.objects.filter(recipe=recipe).select_related("user")
+        serializer = LikeSerializer(likes, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CommentView(APIView):

@@ -31,6 +31,7 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   const [canUpdateAndDelete, setCanUpdateAndDelete] = useState(false);
 
   useEffect(() => {
+    // getLikesByRecipe(recipe.id!);
     const checkUser = async () => {
       const userLoggedIn = await setUserOnRefresh();
       if (userLoggedIn && user && recipe.user_id === user.id) {

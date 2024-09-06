@@ -11,6 +11,7 @@ interface LikeContextType {
   addNewLike: (recipeId: number) => Promise<number>;
   deleteLike: (recipeId: number) => Promise<void>;
   fetchLikes: (recipeId: number) => Promise<void>;
+  getLikesByRecipe: (recipeId: number) => Promise<Like[]>;
 }
 
 const LikeContext = createContext<LikeContextType>({} as LikeContextType);
@@ -18,6 +19,26 @@ const LikeContext = createContext<LikeContextType>({} as LikeContextType);
 export const LikeProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuthContext();
   const [likes, setLikes] = useState<Like[]>([]);
+
+  const getLikesByRecipe = async (recipeId: number): Promise<Like[]> => {
+    try {
+      const response = await axios.get(`${url}recipes/${recipeId}/likes/`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching likes for recipe:", error);
+      throw error;
+    }
+  };
+
+  // const getLikesByUser = async (userId: number): Promise<Like[]> => {
+  //   try {
+  //     const response = await axios.get(`${url}users/likes/?user=${userId}`);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error fetching likes by user:", error);
+  //     throw error;
+  //   }
+  // };
 
   // POST request to add a new like to a recipe
   const addNewLike = async (recipeId: number): Promise<number> => {
@@ -76,6 +97,7 @@ export const LikeProvider = ({ children }: { children: ReactNode }) => {
         addNewLike,
         deleteLike,
         fetchLikes,
+        getLikesByRecipe,
       }}
     >
       {children}

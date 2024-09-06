@@ -2,11 +2,10 @@ TODO:
 3. Likes
    a. only creator can unlike
    b. should display number of likes (?) 
-4. UI redo => https://www.healthymealplans.com/
+4. UI redo => hh
    a. banner redo 
    c. profile display 
    d. header 
-   e. home page 
    f. recipe card - hover effects 
 
 
@@ -16,6 +15,7 @@ Bugs:
   a. When commenting or liking and not logged in 
 3. Delete methods not working => remove auth from django 
 4. Register returning an error but it is working just not setting up state 
+5. For sign up and other buttons add a swal alert 
 
 
 Post Requests:
