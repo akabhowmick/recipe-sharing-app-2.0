@@ -3,7 +3,6 @@ TODO:
    a. only creator can unlike
    b. should display number of likes (?) 
 4. UI redo => hh
-   a. banner redo 
    c. profile display 
    d. header 
    f. recipe card - hover effects 

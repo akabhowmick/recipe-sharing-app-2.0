@@ -75,9 +75,10 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 
   return (
     <Card
+    // className="w-100 h-100"
       sx={{
-        width: 350,
-        height: 350,
+        width: 300,
+        height: 300,
         position: "relative",
         boxShadow: 3,
         cursor: "pointer",
@@ -92,7 +93,7 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
         component="img"
         image={recipe.image}
         alt={`Recipe: ${recipe.title} image`}
-        sx={{ width: "100%", height: 200, objectFit: "cover" }}
+        sx={{ width: "100%", height: 150, objectFit: "cover" }}
       />
       <CardContent>
         <Typography variant="h6" component="div">

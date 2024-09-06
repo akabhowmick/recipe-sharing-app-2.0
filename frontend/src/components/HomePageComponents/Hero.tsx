@@ -7,9 +7,12 @@ export const Hero = () => {
             <h1 className="text-3xl font-bold underline my-4 text-purple-900 mx-auto text-center">
               Welcome to the Recipe Sharing App!
             </h1>
-            <button className="bg-purple-900 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus-shadow-outline">
-              Start Sharing!
-            </button>
+
+            <a href="/create">
+              <button className="bg-purple-900 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus-shadow-outline">
+                Start Sharing!
+              </button>
+            </a>
           </div>
         </div>
         <div className="mt-8 ">

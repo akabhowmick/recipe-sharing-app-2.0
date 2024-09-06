@@ -2,6 +2,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Outlet } from "react-router-dom";
 import { useAuthContext } from "../providers/AuthProvider";
+import { generateRandomImage } from "../MockData/RandomImage";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -12,8 +13,10 @@ export const Navbar = () => {
 
   const navigation = [
     { name: "Recipe Sharing APP", href: "/", current: true },
+    { name: "All Recipes", href: "/allrecipes", current: false },
     { name: "Add a recipe", href: "/create", current: false },
     { name: "Contact Us", href: "/contact", current: false },
+    { name: "About Us", href: "/about", current: false },
     { name: user ? "Logout" : "Login", href: "/login", current: false },
   ];
 
@@ -41,8 +44,8 @@ export const Navbar = () => {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <img
-                    alt="Your Company"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    alt="Your Company Logo"
+                    src={generateRandomImage()}
                     className="h-8 w-auto"
                   />
                 </div>
