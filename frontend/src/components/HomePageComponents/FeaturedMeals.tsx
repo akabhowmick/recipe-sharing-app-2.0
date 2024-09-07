@@ -9,7 +9,7 @@ export const FeaturedMeals: React.FC = () => {
   const { recipes } = useRecipeContext();
 
   return (
-    <div className="text-gray-800">
+    <div className="text-white">
       <section className="text-center py-16">
         <h2 className="text-3xl font-bold">
           Featured <span className="text-purple-900">Recipes</span>

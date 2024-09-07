@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (loggedInUser) {
         handleToken({ email, password });
       }
+      setUser(loggedInUser.user)
       return true;
     } catch (error) {
       console.error("Login failed", error);
@@ -41,12 +42,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+   // Register function
+   const register = async (name: string, email: string, password: string) => {
+    try {
+      const response = await axios.post(`${url}register/`, { name, email, password });
+      const newUser: User = response.data.user;
+      if (newUser) {
+        handleToken({ email, password });
+      }
+      setUser(newUser);
+    } catch (error) {
+      console.error("Registration failed", error);
+    }
+  };
+
+  // Logout function
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+  };
+
   const handleToken = async (credentials: { email: string; password: string }) => {
     try {
       const response = await axios.post(`${url}token/`, credentials);
-      console.log(response);
-      const { access, refresh, user } = response.data;
-      setUser(user);
+      const { access, refresh } = response.data;
       localStorage.setItem("accessToken", access);
       localStorage.setItem("refreshToken", refresh);
     } catch (error) {
@@ -120,24 +140,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUserOnRefresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Register function
-  const register = async (name: string, email: string, password: string) => {
-    try {
-      const response = await axios.post(`${url}register/`, { name, email, password });
-      const newUser: User = response.data;
-      setUser(newUser);
-    } catch (error) {
-      console.error("Registration failed", error);
-    }
-  };
-
-  // Logout function
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-  };
 
   return (
     <AuthContext.Provider

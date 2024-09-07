@@ -46,13 +46,14 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const setLikes = async () => {
+    const currentLikes = await getLikesByRecipe(recipe.id!);
+    setLikesCount(currentLikes.length);
+    // TODO check this logic and each of the id types
+    setIsLiked(currentLikes.some((like) => like.user.id === user?.id));
+  };
+
   useEffect(() => {
-    const setLikes = async () => {
-      const currentLikes = await getLikesByRecipe(recipe.id!);
-      setLikesCount(currentLikes.length);
-      // TODO check this logic and each of the id types
-      setIsLiked(currentLikes.some((like) => like.user.id === user?.id));
-    };
     setLikes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -64,6 +65,7 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
       } else {
         deleteLike(recipe.id!);
       }
+      setLikes();
       setIsLiked(!isLiked);
     } else {
       userNotLoggedIn();
@@ -137,19 +139,19 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
         <Box sx={{ display: "flex", justifyContent: "space-evenly", width: "100%" }}>
           <Tooltip title="Add to favorites" arrow>
             <IconButton
-              aria-label="add to favorites"
+              aria-label={isLiked ? "Remove from Favorites" : "Add to Favorites"}
               onClick={(e) => {
                 e.stopPropagation();
                 handleFavoriteClick();
               }}
               sx={{
                 "&:hover": {
-                  color: "orange", // Change the outline to orange on hover
+                  color: "orange",
                 },
               }}
             >
-              {likesCount > 0 && likesCount}
               {isLiked ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
+              {likesCount > 0 && <span className="px-1">{likesCount}</span>}
             </IconButton>
           </Tooltip>
 

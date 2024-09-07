@@ -5,9 +5,9 @@
 1. [Inspiration](#inspiration)
 2. [Project Breakdown](#project-breakdown)
 3. [Current Features](#current-features)
-3. [Backend Setup](#backend-setup)
-4. [Frontend Setup](#frontend-setup)
-5. [Future Features](#future-features)
+4. [Backend Setup](#backend-setup)
+5. [Frontend Setup](#frontend-setup)
+6. [Future Features](#future-features)
 
 ## Inspiration
 
@@ -19,14 +19,15 @@ As an Indian-American married to a Korean-American, my wife and I often find our
 - **Backend:** Django
 
 ## Current Features
+
 1. Login/Register to your account
 2. Logout from your account
-3. Post new recipes when logged in 
+3. Post new recipes when logged in
 4. View all recipes
 5. Users can delete and update their recipes
-6. For all recipes, the users can upload and display their unique images 
+6. For all recipes, the users can upload and display their unique images
 7. Users can post comments, and edit and delete their comments
-8. Users can select their favorite to store and access easily
+8. Users can select their favorites
 
 ## Backend Setup
 
@@ -110,7 +111,6 @@ npm run dev
 
    Enable users to update or delete their profiles, giving them the ability to manage their presence on the platform.
 
-2. Social Interactions:
+2. Filters and Search Bar:
 
-   Expand the app's social features, allowing users to share recipes on other platforms, like, favorite, bookmark, and comment on recipes. This will foster a community of food enthusiasts and encourage engagement.
-
+   Users will be able to filter and search for specific recipes, and toggle between their saved recipes and all recipes.

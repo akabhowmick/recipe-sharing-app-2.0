@@ -1,9 +1,7 @@
 Bugs: 
-1. When logging in or registering not getting the user id
-4. Register returning an error but it is working just not setting up state 
-5. Likes
+3. Likes
    a. only creator can unlike
-   b. should display number of likes (?) 
+   b. update number of likes on add and delete
 
 
 Post Requests:
