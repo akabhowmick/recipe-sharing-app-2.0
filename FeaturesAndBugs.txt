@@ -1,16 +1,9 @@
-TODO: 
-3. Likes
-   a. only creator can unlike
-   b. should display number of likes (?) 
-
-
 Bugs: 
 1. When logging in or registering not getting the user id
-2. Display sweet alert errors when things are not working
-  a. When commenting or liking and not logged in 
-3. Delete methods not working => remove auth from django 
 4. Register returning an error but it is working just not setting up state 
-5. About Us page 
+5. Likes
+   a. only creator can unlike
+   b. should display number of likes (?) 
 
 
 Post Requests:

@@ -32,4 +32,25 @@ export const unauthorizedMessage = () => {
     text: "You don't have the necessary permissions to access this resource.",
     icon: "error",
   });
-}
+};
+
+export const confirmDelete = () => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "No, keep it",
+  }).then((result) => {
+    console.log(result);
+  });
+};
+
+export const userNotLoggedIn = () => {
+  Swal.fire({
+    title: "User not logged in!",
+    text: "Please log in or sign up to access this feature.",
+    icon: "error",
+  });
+};

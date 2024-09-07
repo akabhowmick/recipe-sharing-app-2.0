@@ -22,7 +22,7 @@ export const LikeProvider = ({ children }: { children: ReactNode }) => {
 
   const getLikesByRecipe = async (recipeId: number): Promise<Like[]> => {
     try {
-      const response = await axios.get(`${url}recipes/${recipeId}/likes/`);
+      const response = await axios.get(`${url}${recipeId}/likes/`);
       return response.data;
     } catch (error) {
       console.error("Error fetching likes for recipe:", error);

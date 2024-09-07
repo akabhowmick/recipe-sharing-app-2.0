@@ -21,18 +21,19 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useRecipeContext } from "../../providers/RecipesProvider";
 import { useLikeContext } from "../../providers/LikesProvider";
 import { useAuthContext } from "../../providers/AuthProvider";
+import { userNotLoggedIn } from "../UserAlert";
 
 export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   const { user, setUserOnRefresh } = useAuthContext();
   const { deleteRecipe } = useRecipeContext();
-  const { addNewLike, deleteLike } = useLikeContext();
+  const { addNewLike, deleteLike, getLikesByRecipe } = useLikeContext();
   const navigate = useNavigate();
   const [isLiked, setIsLiked] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [canUpdateAndDelete, setCanUpdateAndDelete] = useState(false);
+  const [likesCount, setLikesCount] = useState(0);
 
   useEffect(() => {
-    // getLikesByRecipe(recipe.id!);
     const checkUser = async () => {
       const userLoggedIn = await setUserOnRefresh();
       if (userLoggedIn && user && recipe.user_id === user.id) {
@@ -45,13 +46,28 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const setLikes = async () => {
+      const currentLikes = await getLikesByRecipe(recipe.id!);
+      setLikesCount(currentLikes.length);
+      // TODO check this logic and each of the id types
+      setIsLiked(currentLikes.some((like) => like.user.id === user?.id));
+    };
+    setLikes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleFavoriteClick = () => {
-    if (!isLiked) {
-      addNewLike(recipe.id!);
+    if (user) {
+      if (!isLiked) {
+        addNewLike(recipe.id!);
+      } else {
+        deleteLike(recipe.id!);
+      }
+      setIsLiked(!isLiked);
     } else {
-      deleteLike(recipe.id!);
+      userNotLoggedIn();
     }
-    setIsLiked(!isLiked);
   };
 
   const handleDeleteClick = () => {
@@ -132,6 +148,7 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
                 },
               }}
             >
+              {likesCount > 0 && likesCount}
               {isLiked ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
             </IconButton>
           </Tooltip>

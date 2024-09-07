@@ -3,9 +3,11 @@ import { useCommentsContext } from "../../../providers/CommentsProvider";
 import { SingleComment } from "./Comment";
 import { Recipe } from "../../../types/interfaces";
 import { List } from "@mui/material";
-import { errorMessage } from "../../UserAlert";
+import { errorMessage, userNotLoggedIn } from "../../UserAlert";
+import { useAuthContext } from "../../../providers/AuthProvider";
 
 const CommentsList = ({ recipe }: { recipe: Recipe }) => {
+  const { user } = useAuthContext();
   const { comments, fetchComments, addComment } = useCommentsContext();
   const [commentContent, setCommentContent] = useState("");
 
@@ -15,13 +17,17 @@ const CommentsList = ({ recipe }: { recipe: Recipe }) => {
   }, [recipe]);
 
   const handleAddComment = async () => {
-    const content = commentContent;
-    const commentId = await addComment(recipe, content);
-    if (commentId) {
-      fetchComments(recipe.id!); // Refresh comments list after adding
-      setCommentContent(""); // Clear comment input after adding
+    if (user) {
+      const content = commentContent;
+      const commentId = await addComment(recipe, content);
+      if (commentId) {
+        fetchComments(recipe.id!); // Refresh comments list after adding
+        setCommentContent(""); // Clear comment input after adding
+      } else {
+        errorMessage();
+      }
     } else {
-      errorMessage();
+      userNotLoggedIn();
     }
   };
 
