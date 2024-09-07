@@ -19,7 +19,7 @@ export interface Recipe {
 
 export interface Like {
   id?: number;
-  user: RecipeAppUser;
+  user: number;
   recipe: Recipe;
   created_at: Date;
 }

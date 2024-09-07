@@ -49,8 +49,11 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   const setLikes = async () => {
     const currentLikes = await getLikesByRecipe(recipe.id!);
     setLikesCount(currentLikes.length);
-    // TODO check this logic and each of the id types
-    setIsLiked(currentLikes.some((like) => like.user.id === user?.id));
+    const currentlyLiked = currentLikes.find((like) => like.user === parseInt(user!.id!));
+    console.log("likes array: ", currentLikes);
+    console.log("user ID: ", user?.id, typeof user?.id);
+    console.log("like ID: ", currentlyLiked?.user, typeof currentlyLiked?.user);
+    setIsLiked(currentlyLiked ? true : false);
   };
 
   useEffect(() => {
@@ -58,12 +61,12 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleFavoriteClick = () => {
+  const handleFavoriteClick = async () => {
     if (user) {
       if (!isLiked) {
-        addNewLike(recipe.id!);
+        await addNewLike(recipe.id!);
       } else {
-        deleteLike(recipe.id!);
+        await deleteLike(recipe.id!);
       }
       setLikes();
       setIsLiked(!isLiked);
