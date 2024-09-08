@@ -11,11 +11,117 @@ import { errorMessage } from "../UserAlert.ts";
 import { useAuthContext } from "../../providers/AuthProvider";
 
 export const EditRecipeForm = ({ recipeToEdit }: { recipeToEdit: Recipe }) => {
-  // const { user } = useAuthContext();
-  // TODO check if user has the authorization to edit the recipe
-
   const { updateRecipe } = useRecipeContext();
   const navigate = useNavigate();
+  const { user } = useAuthContext();
+
+  const [title, setTitle] = useState(recipeToEdit.title);
+  const [ingredients, setIngredients] = useState<{ name: string; quantity: string }[]>(
+    recipeToEdit.ingredients.split("|").map((ingredient) => {
+      const [name, quantity] = ingredient.split(":");
+      return { name, quantity };
+    })
+  );
+  const [instructions, setInstructions] = useState<string[]>(
+    recipeToEdit.instructions.split("^ ").filter((step) => step)
+  );
+  const [image, setImage] = useState<File | null>(null);
+  const [imageURL, setImageURL] = useState(recipeToEdit.image);
+  const [cuisine_type, setCuisine_type] = useState(recipeToEdit.cuisine_type);
+  const [fun_fact, setFun_fact] = useState(recipeToEdit.fun_fact);
+  const [description, setDescription] = useState(recipeToEdit.description);
+
+  // Add new empty ingredient fields
+  const handleAddIngredient = () => {
+    setIngredients([...ingredients, { name: "", quantity: "" }]);
+  };
+
+  // Update ingredient values
+  const handleIngredientChange = (index: number, key: "name" | "quantity", value: string) => {
+    const updatedIngredients = [...ingredients];
+    updatedIngredients[index][key] = value;
+    setIngredients(updatedIngredients);
+  };
+
+  // Remove ingredient
+  const handleRemoveIngredient = (index: number) => {
+    const updatedIngredients = [...ingredients];
+    updatedIngredients.splice(index, 1);
+    setIngredients(updatedIngredients);
+  };
+
+  // Add new empty instruction field
+  const handleAddInstruction = () => {
+    setInstructions([...instructions, ""]);
+  };
+
+  // Update instruction step
+  const handleInstructionChange = (index: number, value: string) => {
+    const updatedInstructions = [...instructions];
+    updatedInstructions[index] = value;
+    setInstructions(updatedInstructions);
+  };
+
+  // Remove instruction step
+  const handleRemoveInstruction = (index: number) => {
+    const updatedInstructions = [...instructions];
+    updatedInstructions.splice(index, 1);
+    setInstructions(updatedInstructions);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const formattedIngredients = ingredients
+      .map((ingredient) => `${ingredient.name}:${ingredient.quantity}`)
+      .join("|");
+
+    const formattedInstructions = instructions.join("^");
+
+    if (image) {
+      const storageRef = ref(storage, `images/${image.name + v4()}`);
+      const uploadTask = uploadBytesResumable(storageRef, image);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+        (error) => {
+          console.error("Upload failed", error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setImageURL(downloadURL);
+            onSubmit(
+              recipeToEdit.id!,
+              title,
+              formattedIngredients,
+              formattedInstructions,
+              downloadURL,
+              cuisine_type,
+              description,
+              fun_fact,
+              parseInt(user!.id)
+            );
+          });
+        }
+      );
+    } else {
+      onSubmit(
+        recipeToEdit.id!,
+        title,
+        formattedIngredients,
+        formattedInstructions,
+        imageURL,
+        cuisine_type,
+        description,
+        fun_fact,
+        parseInt(user!.id)
+      );
+    }
+  };
 
   const onSubmit = async (
     id: number,
@@ -56,68 +162,6 @@ export const EditRecipeForm = ({ recipeToEdit }: { recipeToEdit: Recipe }) => {
       });
     }
   };
-  const { user } = useAuthContext();
-  const [title, setTitle] = useState(recipeToEdit.title);
-  const [ingredients, setIngredients] = useState(recipeToEdit.ingredients);
-  const [instructions, setInstructions] = useState(recipeToEdit.instructions);
-  const id = recipeToEdit.id;
-  const [image, setImage] = useState<File | null>(null); // Store image here
-  const [imageURL, setImageURL] = useState(recipeToEdit.image);
-  const [cuisine_type, setCuisine_type] = useState(recipeToEdit.cuisine_type);
-  const [fun_fact, setFun_fact] = useState(recipeToEdit.fun_fact);
-  const [description, setDescription] = useState(recipeToEdit.description);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (image) {
-      // Upload image to Firebase when the form is submitted
-      const storageRef = ref(storage, `images/${image.name + v4()}`);
-      const uploadTask = uploadBytesResumable(storageRef, image);
-
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          // Optional: Track upload progress
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-        },
-        (error) => {
-          console.error("Upload failed", error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setImageURL(downloadURL);
-            // Call onSubmit after the image is uploaded
-            onSubmit(
-              id!,
-              title,
-              ingredients,
-              instructions,
-              downloadURL,
-              cuisine_type,
-              fun_fact,
-              description,
-              parseInt(user!.id)
-            );
-          });
-        }
-      );
-    } else {
-      // Call onSubmit without imageURL if no image is selected
-      onSubmit(
-        id!,
-        title,
-        ingredients,
-        instructions,
-        imageURL,
-        cuisine_type,
-        description,
-        fun_fact,
-        parseInt(user!.id)
-      );
-    }
-  };
 
   return (
     <form
@@ -134,28 +178,68 @@ export const EditRecipeForm = ({ recipeToEdit }: { recipeToEdit: Recipe }) => {
           className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       </div>
+
       <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">
-          Ingredients (separate by commas)
-        </label>
-        <textarea
-          value={ingredients}
-          onChange={(e) => setIngredients(e.target.value)}
-          required
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
+        <label className="block text-gray-700 font-bold mb-2">Ingredients</label>
+        {ingredients.map((ingredient, index) => (
+          <div key={index} className="flex items-center mb-2">
+            <input
+              type="text"
+              placeholder="Ingredient"
+              value={ingredient.name}
+              onChange={(e) => handleIngredientChange(index, "name", e.target.value)}
+              className="w-1/2 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <input
+              type="text"
+              placeholder="Quantity"
+              value={ingredient.quantity}
+              onChange={(e) => handleIngredientChange(index, "quantity", e.target.value)}
+              className="w-1/4 px-3 py-2 ml-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <button
+              type="button"
+              onClick={() => handleRemoveIngredient(index)}
+              className="ml-2 text-red-600"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+        <button type="button" onClick={handleAddIngredient} className="text-blue-500 mt-2">
+          + Add Ingredient
+        </button>
       </div>
+
+      {/* Instructions Section */}
       <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">
-          Instructions (separate by periods)
-        </label>
-        <textarea
-          value={instructions}
-          onChange={(e) => setInstructions(e.target.value)}
-          required
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
+        <label className="block text-gray-700 font-bold mb-2">Instructions</label>
+        {instructions.map((instruction, index) => (
+          <div key={index} className="flex items-center mb-2">
+            <div className="flex-1">
+              <label className="block text-gray-700 font-bold mb-1">Step {index + 1}</label>
+              <textarea
+                value={instruction}
+                placeholder={`Step ${index + 1}`}
+                onChange={(e) => handleInstructionChange(index, e.target.value)}
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => handleRemoveInstruction(index)}
+              className="ml-2 text-red-600"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+        <button type="button" onClick={handleAddInstruction} className="text-blue-500 mt-2">
+          + Add Step
+        </button>
       </div>
+
       <ImageUploader setImage={setImage} />
       {imageURL && (
         <div>
@@ -163,6 +247,7 @@ export const EditRecipeForm = ({ recipeToEdit }: { recipeToEdit: Recipe }) => {
           <img src={imageURL} alt="Uploaded file" className="uploaded-img" />
         </div>
       )}
+
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2">Cuisine Type</label>
         <select

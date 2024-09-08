@@ -28,6 +28,8 @@ As an Indian-American married to a Korean-American, my wife and I often find our
 6. For all recipes, the users can upload and display their unique images
 7. Users can post comments, and edit and delete their comments
 8. Users can select their favorites
+9. Filters and Search Bar to allow users to see specific recipes
+10. Added pagination to help seeing recipes
 
 ## Backend Setup
 
@@ -111,8 +113,4 @@ npm run dev
 
    Enable users to update or delete their profiles, giving them the ability to manage their presence on the platform.
 
-2. Filters and Search Bar:
-
-   Users will be able to filter and search for specific recipes, and toggle between their saved recipes and all recipes.
-
-3. Reviews for each recipe
+2. Reviews for each recipe

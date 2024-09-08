@@ -4,6 +4,7 @@ import { v4 } from "uuid";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../utils/firebaseConfig";
 import { useAuthContext } from "../../providers/AuthProvider";
+import { cuisines } from "../../utils/generalInfo";
 
 interface RecipeFormProps {
   initialTitle?: string;
@@ -211,15 +212,11 @@ const RecipeForm: React.FC<RecipeFormProps> = ({
           <option value="" disabled>
             Select a cuisine
           </option>
-          <option value="Taiwanese">Taiwanese</option>
-          <option value="Cantonese">Cantonese</option>
-          <option value="Szechuan">Szechuan</option>
-          <option value="Japanese">Japanese</option>
-          <option value="Korean">Korean</option>
-          <option value="Thai">Thai</option>
-          <option value="Vietnamese">Vietnamese</option>
-          <option value="Indian">Indian</option>
-          <option value="Other">Other</option>
+          {cuisines.map((cuisine, index) => (
+            <option key={index} value={cuisine}>
+              {cuisine}
+            </option>
+          ))}
         </select>
       </div>
 

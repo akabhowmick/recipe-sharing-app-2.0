@@ -135,7 +135,7 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
       // className="w-100 h-100"
       sx={{
         width: 300,
-        height: 300,
+        height: 325,
         position: "relative",
         boxShadow: 3,
         cursor: "pointer",

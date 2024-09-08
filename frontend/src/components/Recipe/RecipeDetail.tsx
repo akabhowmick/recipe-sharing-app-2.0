@@ -67,10 +67,14 @@ const RecipeDetail = ({ recipe }: { recipe: Recipe }) => {
                 <ul>
                   {instructions.split("^").map((instruction, index) => (
                     <li className="text-gray-600 mb-2" key={index}>
-                      <Typography variant="h6" className="font-bold mb-2 underline">
-                        Step {index + 1}:
-                      </Typography>{" "}
-                      {instruction}
+                      {instruction !== "" && (
+                        <>
+                          <Typography variant="h6" className="font-bold mb-2 underline">
+                            Step {index + 1}:
+                          </Typography>{" "}
+                          {instruction}
+                        </>
+                      )}
                     </li>
                   ))}
                 </ul>

@@ -1,19 +1,20 @@
-import { Recipe } from "../types/interfaces";
 import { generateRandomImage } from "./RandomImage";
 
-export const RecipesData: Recipe[] = [
+export const RecipesData = [
   {
     id: 1,
     title: "Braised Pork Belly (Hong Shao Rou)",
     ingredients:
-      "500g pork belly, 1/4 cup soy sauce, 2 tbsp sugar, 3 slices ginger, 3 cloves garlic, 2 star anise, 1 cinnamon stick, 1/4 cup Shaoxing wine",
+      "pork belly: 500g | soy sauce: 1/4 cup | sugar: 2 tbsp | ginger: 3 slices | garlic: 3 cloves | star anise: 2 pieces | cinnamon stick: 1 piece | Shaoxing wine: 1/4 cup",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/recipe-sharing-app-6f66b.appspot.com/o/images%2FScreenshot%202024-09-08%20at%2009.19.18.png?alt=media&token=cef3e373-bd89-4718-af6d-04ee0fbe1aed",
     instructions:
-      "Blanch the pork belly in boiling water for 5 minutes. Drain and set aside. In a pot, caramelize the sugar until golden brown. Add the ginger, garlic, star anise, and cinnamon stick, and stir for 1 minute. Add the pork belly, soy sauce, and Shaoxing wine. Add water to cover the pork. Bring to a boil, then reduce to a simmer and cook for 1.5 hours until the pork is tender and the sauce has thickened.",
-    image: generateRandomImage(),
+      "Blanch the pork belly in boiling water for 5 minutes to remove any impurities and soften the meat^ After blanching, drain the pork belly and pat it dry with paper towels to prepare it for browning^ In a separate pot, melt the sugar over medium heat until it turns golden brown and begins to caramelize, stirring constantly to avoid burning^ Once caramelized, quickly add the ginger slices, garlic, star anise, and cinnamon stick, stirring for about 1 minute until fragrant and the spices release their aroma^ Add the pork belly to the pot, letting it brown slightly on all sides to enhance the flavor and texture^ Pour in the soy sauce and Shaoxing wine, ensuring the pork belly is evenly coated in the mixture^ Add enough water to cover the pork belly completely, and bring the mixture to a boil^ Once boiling, reduce the heat to a low simmer, cover the pot, and let it cook for 1.5 hours, occasionally stirring to ensure even cooking^ During the cooking process, the sauce will slowly reduce and thicken, while the pork belly will become tender and absorb the rich flavors of the sauce^ After 1.5 hours, check the tenderness of the pork, and if desired, simmer for an additional 15-20 minutes to further thicken the sauce and intensify the flavor^ Serve the braised pork belly with steamed rice, allowing the rich sauce to complement the dish's savory and slightly sweet flavor profile^",
     cuisine_type: "Chinese",
     description:
       "A classic Chinese dish, Hong Shao Rou is known for its rich, savory flavor and melt-in-your-mouth texture.",
     fun_fact: "This dish was a favorite of Chairman Mao, who hailed from Hunan province.",
+    userID: 12,
   },
   {
     id: 2,
