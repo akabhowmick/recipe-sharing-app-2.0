@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../providers/AuthProvider";
-import { errorMessage, logOutMessage } from "./UserAlert.ts";
+import { errorMessage } from "./UserAlert.ts";
 
 const Logout = () => {
   const { logout } = useAuthContext();
@@ -9,7 +9,6 @@ const Logout = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      logOutMessage();
       navigate(`/`);
     } catch (error) {
       console.error("Logout failed", error);

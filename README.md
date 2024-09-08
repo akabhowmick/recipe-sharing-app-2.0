@@ -114,3 +114,5 @@ npm run dev
 2. Filters and Search Bar:
 
    Users will be able to filter and search for specific recipes, and toggle between their saved recipes and all recipes.
+
+3. Reviews for each recipe

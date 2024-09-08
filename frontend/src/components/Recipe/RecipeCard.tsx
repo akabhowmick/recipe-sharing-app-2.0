@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { Recipe } from "../../types/interfaces";
-import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import { useEffect, useState } from "react";
 import {
   Card,
@@ -18,20 +17,27 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import CommentIcon from "@mui/icons-material/Comment";
+import ShareIcon from "@mui/icons-material/Share";
 import { useRecipeContext } from "../../providers/RecipesProvider";
 import { useLikeContext } from "../../providers/LikesProvider";
 import { useAuthContext } from "../../providers/AuthProvider";
 import { userNotLoggedIn } from "../UserAlert";
+import { useCommentsContext } from "../../providers/CommentsProvider";
+import Swal, { SweetAlertResult } from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   const { user, setUserOnRefresh } = useAuthContext();
   const { deleteRecipe } = useRecipeContext();
+  const { fetchComments } = useCommentsContext();
   const { addNewLike, deleteLike, getLikesByRecipe } = useLikeContext();
   const navigate = useNavigate();
   const [isLiked, setIsLiked] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [canUpdateAndDelete, setCanUpdateAndDelete] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -50,14 +56,17 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
     const currentLikes = await getLikesByRecipe(recipe.id!);
     setLikesCount(currentLikes.length);
     const currentlyLiked = currentLikes.find((like) => like.user === parseInt(user!.id!));
-    console.log("likes array: ", currentLikes);
-    console.log("user ID: ", user?.id, typeof user?.id);
-    console.log("like ID: ", currentlyLiked?.user, typeof currentlyLiked?.user);
     setIsLiked(currentlyLiked ? true : false);
+  };
+
+  const setComments = async () => {
+    const currentComments = await fetchComments(recipe.id!);
+    setCommentCount(currentComments.length);
   };
 
   useEffect(() => {
     setLikes();
+    setComments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -93,6 +102,32 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 
   const handleCardClick = () => {
     navigate(`/recipes/${recipe.id}`);
+  };
+
+  const MySwal = withReactContent(Swal);
+
+  const shareLink = () => {
+    const url = window.location.href;
+    const recipeUrl = url + 'recipes/' + recipe.id
+    MySwal.fire({
+      title: "Share this recipe",
+      text: "Copy the link below to share:",
+      input: "text",
+      inputValue: recipeUrl,
+      showConfirmButton: true,
+      confirmButtonText: "Copy",
+      showCloseButton: true,
+      inputAttributes: {
+        readonly: "true",
+      },
+    }).then((result: SweetAlertResult) => {
+      if (result.isConfirmed) {
+        // Copy the URL to clipboard
+        navigator.clipboard.writeText(url).then(() => {
+          Swal.fire("Copied!", "The link has been copied to your clipboard.", "success");
+        });
+      }
+    });
   };
 
   return (
@@ -140,6 +175,24 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 
       <CardActions disableSpacing>
         <Box sx={{ display: "flex", justifyContent: "space-evenly", width: "100%" }}>
+          <Tooltip title="Comment on the recipe!" arrow>
+            <IconButton
+              aria-label="Comment on the recipe!"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCardClick();
+              }}
+              sx={{
+                "&:hover": {
+                  color: "orange",
+                },
+              }}
+            >
+              <CommentIcon />
+              {commentCount > 0 && <span className="px-1">{commentCount}</span>}
+            </IconButton>
+          </Tooltip>
+
           <Tooltip title="Add to favorites" arrow>
             <IconButton
               aria-label={isLiked ? "Remove from Favorites" : "Add to Favorites"}
@@ -158,12 +211,12 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="Learn more about this recipe" arrow>
+          <Tooltip title="Share this recipe" arrow>
             <IconButton
-              aria-label="learn more about this recipe"
+              aria-label="Share this recipe"
               onClick={(e) => {
                 e.stopPropagation();
-                handleCardClick();
+                shareLink();
               }}
               sx={{
                 "&:hover": {
@@ -171,7 +224,7 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
                 },
               }}
             >
-              <ReadMoreIcon />
+              <ShareIcon />
             </IconButton>
           </Tooltip>
 

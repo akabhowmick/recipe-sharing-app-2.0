@@ -1,7 +1,7 @@
 import React from "react";
-import { mealPlans } from "./info.ts";
-import MealPlanCard from "./MealPlanCard.tsx";
-import { generateRandomImage } from "../../MockData/RandomImage.ts";
+// import { mealPlans } from "./info.ts";
+// import MealPlanCard from "./MealPlanCard.tsx";
+// import { generateRandomImage } from "../../MockData/RandomImage.ts";
 import { RecipeList } from "../Recipe/RecipeList.tsx";
 import { useRecipeContext } from "../../providers/RecipesProvider.tsx";
 
@@ -21,7 +21,7 @@ export const FeaturedMeals: React.FC = () => {
           </button>
         </a>
       </section>
-      <section className="text-center py-16 mx-4">
+      {/* <section className="text-center py-16 mx-4">
         <h1 className="text-4xl font-bold">
           Specialty <span className="text-purple-900">Meal Plans</span>
         </h1>
@@ -53,7 +53,7 @@ export const FeaturedMeals: React.FC = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };

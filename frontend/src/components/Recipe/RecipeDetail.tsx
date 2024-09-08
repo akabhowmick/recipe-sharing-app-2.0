@@ -26,28 +26,32 @@ const RecipeDetail = ({ recipe }: { recipe: Recipe }) => {
                 Recipe added by: {user?.name || "Our User"}
               </Typography>
               <Typography variant="body2" color="text.secondary" className="my-1">
-                <span className="text-purple-900">Description: </span>{description}
+                <span className="text-purple-900">Description: </span>
+                {description}
               </Typography>
               <Typography variant="body2" color="text.secondary" className="my-1">
-              <span className="text-orange-500">Fun Fact: </span> {fun_fact}
+                <span className="text-orange-500">Fun Fact: </span> {fun_fact}
               </Typography>
 
               {/* Ingredients Table */}
-              <div className="mt-4">
+              <div className="mt-4 w-100">
                 <Typography variant="h6" className="font-bold mb-2">
                   What you'll need:
                 </Typography>
-                <table className="min-w-full table-auto">
+                <table className="w-full table-auto">
                   <thead>
                     <tr>
                       <th className="px-4 py-2">Ingredient</th>
+                      <th className="px-4 py-2">Quantity</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {ingredients.split(", ").map((ingredient, index) => {
+                    {ingredients.split("|").map((ingredient, index) => {
+                      const [food, quantity] = ingredient.split(":");
                       return (
                         <tr key={index}>
-                          <td className="border px-4 py-2">{ingredient}</td>
+                          <td className="border px-4 py-2">{food}</td>
+                          <td className="border px-4 py-2">{quantity}</td>
                         </tr>
                       );
                     })}
@@ -61,9 +65,12 @@ const RecipeDetail = ({ recipe }: { recipe: Recipe }) => {
                   How to make it:
                 </Typography>
                 <ul>
-                  {instructions.split(". ").map((instruction, index) => (
+                  {instructions.split("^").map((instruction, index) => (
                     <li className="text-gray-600 mb-2" key={index}>
-                      Step #{index + 1}: {instruction}
+                      <Typography variant="h6" className="font-bold mb-2 underline">
+                        Step {index + 1}:
+                      </Typography>{" "}
+                      {instruction}
                     </li>
                   ))}
                 </ul>

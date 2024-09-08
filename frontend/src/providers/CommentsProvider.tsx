@@ -8,7 +8,7 @@ const url = "http://127.0.0.1:8000/api/recipes/";
 interface CommentsContextType {
   comments: Comment[];
   setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
-  fetchComments: (recipeId: number) => Promise<void>;
+  fetchComments: (recipeId: number) => Promise<Comment[]>
   addComment: (recipe: Recipe, newComment: string) => Promise<number>;
   updateComment: (recipeId: number, commentId: number, updatedComment: string) => Promise<number>;
   deleteComment: (recipeId: number, commentId: number) => Promise<void>;
@@ -21,16 +21,17 @@ export const CommentsProvider = ({ children }: { children: ReactNode }) => {
   const [comments, setComments] = useState<Comment[]>([]);
 
   // Fetch all comments for a specific recipe
-  const fetchComments = async (recipeId: number): Promise<void> => {
+  const fetchComments = async (recipeId: number): Promise<Comment[]> => {
     try {
       const response = await axios.get(`${url}${recipeId}/comment/`);
       setComments(response.data);
+      return response.data; // return the array of comments
     } catch (error) {
       console.error("Error fetching comments:", error);
-      throw error;
+      throw error; // re-throw the error for the caller to handle
     }
   };
-
+  
   // POST request to add a new comment to a recipe
   const addComment = async (recipe: Recipe, newComment: string): Promise<number> => {
     const fullNewComment = {
