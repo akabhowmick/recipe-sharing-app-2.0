@@ -23,7 +23,7 @@ export const EditRecipeForm = ({ recipeToEdit }: { recipeToEdit: Recipe }) => {
     })
   );
   const [instructions, setInstructions] = useState<string[]>(
-    recipeToEdit.instructions.split("^ ").filter((step) => step)
+    recipeToEdit.instructions.split("^").filter((step) => step)
   );
   const [image, setImage] = useState<File | null>(null);
   const [imageURL, setImageURL] = useState(recipeToEdit.image);
